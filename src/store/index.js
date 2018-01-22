@@ -5,6 +5,8 @@ import uuid from '../util/uuid'
 import elementMap from "../canvas/elements";
 import {ElementTypes} from "../constants"
 import xml2js from'xml2js';
+import  builder from 'xmlbuilder';
+
 
 export default class Store{
     @observable rootID = null;
@@ -192,7 +194,16 @@ export default class Store{
       this.toxml(this.rootID);
   }
   toxml(id){
-    const obj = this.components.get(id)
+  /*   const obj = this.components.get(id)
+    if(!obj) return ;
+    let root =  builder.create('root');
+    root.ele("id",obj.id)
+    
+    if(children ==null) return ;
+    for(let i =0,length = children.length;i<length;i++){
+       this.toxml(children[i]);
+    } */
+   /*  const obj = this.components.get(id)
     if(!obj) return ;
     var builder = new xml2js.Builder({cdata:true});
     var xml = builder.buildObject(obj);
@@ -201,6 +212,7 @@ export default class Store{
     if(children ==null) return ;
     for(let i =0,length = children.length;i<length;i++){
        this.toxml(children[i]);
-    }
-  }
+    }*/
+
+  } 
 }

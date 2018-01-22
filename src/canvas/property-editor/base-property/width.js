@@ -12,9 +12,6 @@ export default class Width extends Component {
      super()
      this.propertyName = "width";
   }
-
-
-  
   handleChange = (ev) => {
     const value = parseInt(ev.target.value.match(/[0-9]*/)[0], 10);
     const result = isNaN(value) ? "" : value;
