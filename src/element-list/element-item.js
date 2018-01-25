@@ -20,9 +20,15 @@ const boxSource = {
 	endDrag(props, monitor) {
     const item = monitor.getItem()
 		const dropResult = monitor.getDropResult()
-    console.log("drop",dropResult)
 		if (dropResult) {
-      props.onDrop(props.elementType,dropResult.id)
+      let {left,top}= props.getDropPosition(dropResult.id);
+      props.onDrop(props.elementType,dropResult.id,{style:
+          {
+            left: left,
+            top:top
+          }
+        }
+      )
 		}
 	},
 }
@@ -33,6 +39,8 @@ const boxSource = {
 }))
 class ElementItem extends Component {
   static propTypes = {
+    connectDragSource: PropTypes.func.isRequired,
+		isDragging: PropTypes.bool.isRequired,
     elementType: PropTypes.string.isRequired,
     elementLeft: PropTypes.number.isRequired,
     elementTop: PropTypes.number.isRequired,
@@ -51,7 +59,6 @@ class ElementItem extends Component {
 
   constructor(props, context) {
     super(props, context);
-
     this.state = {
       delta: [0, 0],
       mouseStart: [0, 0],
@@ -115,7 +122,7 @@ class ElementItem extends Component {
     });
   }
 
-
+ 
   handleMouseDown = (ev) => {
     ev.preventDefault();
     ev.persist();
@@ -230,11 +237,12 @@ class ElementItem extends Component {
       motionStyles.opacity = 0.9;
     }
 
-    return (
+		const { isDragging, connectDragSource } = this.props 
+    return  connectDragSource(
       <div
-        onMouseDown={this.handleMouseDown}
+        /* onMouseDown={this.handleMouseDown}
         onTouchStart={this.handleTouchStart}
-        className={`${styles.wrapper} ${BLACKLIST_CURRENT_ELEMENT_DESELECT}`}
+         */className={`${styles.wrapper} ${BLACKLIST_CURRENT_ELEMENT_DESELECT}`}
         style={{
           width: elementWidth,
           height: elementHeight,

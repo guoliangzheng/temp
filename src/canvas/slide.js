@@ -10,7 +10,7 @@ import * as constraints from "./constraints";
 import SnapLines from "./snap-lines";
 import elementFromType from "./element-types";
 import { DropTarget } from 'react-dnd'
-/* const boxTarget = {
+const boxTarget = {
 	drop(props,monitor) {
     return { id: props.index}
 	},
@@ -19,13 +19,15 @@ import { DropTarget } from 'react-dnd'
 	connectDropTarget: connect.dropTarget(),
 	isOver: monitor.isOver(),
 	canDrop: monitor.canDrop(),
-})) */
+})) 
 @observer
 class Slide extends Component {
   static propTypes = {
-    scale: PropTypes.number.isRequired
+    scale: PropTypes.number.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
+		isOver: PropTypes.bool.isRequired,
+		canDrop: PropTypes.bool.isRequired,
   };
-
   static contextTypes = {
     store: PropTypes.object
   };
@@ -36,7 +38,6 @@ class Slide extends Component {
       snapLines: [],
       activeSnapLines: []
     };
-
     this.elementRefs = {};
   }
 
@@ -231,7 +232,7 @@ class Slide extends Component {
           postions={{top:top,left:left}}
 
           component={childObj}
-          ref={(el) => { this.elementRefs[childObj.id] = el; }}
+          ref={(el) => { this.context.store.setDomRef(childObj.id,el); }}
           scale={this.props.scale}
           rect={intermediarySize}
           onResize={this.handleResize}
@@ -262,8 +263,10 @@ class Slide extends Component {
       [styles.isDragging]: this.context.store.isDragging
     });
     const currentSlide = components.get(rootID);
-    return (
-      <div className={classes} style={{ ...currentSlide.props.style }} id="slide">
+    console.log("slide",currentSlide.props.style)
+    const { canDrop, isOver, connectDropTarget } = this.props;
+    return connectDropTarget(
+      <div canDrop={canDrop} isOver={isOver} ref={(ref)=>{this.context.store.setDomRef(rootID,ref)}}  connectDropTarget={connectDropTarget} className={classes} style={{ ...currentSlide.props.style }} id={rootID}>
         {currentSlide && rootID && currentSlide.children.map(this.renderChild)}
         <SnapLines lines={this.state.activeSnapLines} scale={this.props.scale} />
       </div>

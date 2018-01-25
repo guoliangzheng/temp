@@ -7,7 +7,7 @@ import {ElementTypes} from "../constants"
 import xml2js from'xml2js';
 import  builder from 'xmlbuilder';
 import HttpService from "../httpservice";
-
+import { findDOMNode } from "react-dom";
 
 export default class Store{
     @observable rootID = null;
@@ -31,6 +31,8 @@ export default class Store{
     @observable components = null;
     @observable poprtyeChange =0;
     @observable dropTagElementId = null;
+    domRefs = new Map();
+
     @computed get currentSlide() {
       return this.slide;
     }
@@ -46,7 +48,7 @@ export default class Store{
           parent:null,
           id: id,
           type:'Slide',
-          props: { style: {}, transition: ["slide"] },
+          props: { style: {height:'1000',width:'700'}, transition: ["slide"] },
           children: []
          })
          this.components = new Map();
@@ -71,11 +73,10 @@ export default class Store{
     });
   }
 
-  dropElement(elementType, extraProps) {
-    let selectItemid = this.dropTagElementId || this.rootID;
+  dropElement(elementType,dropTagID, extraProps) {
+    let selectItemid = dropTagID || this.rootID;
     const parent = this.components.get(selectItemid);
     if(parent==null)  return ;
-    //const slideToAddTo = this.currentSlide;
     const element = elementMap[elementType];
     const id = uuid();
     const mergedProps = merge(element.props, extraProps);
@@ -90,7 +91,17 @@ export default class Store{
     this.components.set(id,child);
     
   }
-  
+  getDropPosition(dropTagID){
+    let e=window.event;
+    const id = dropTagID || this.rootID;
+    const slideOffset = findDOMNode(this.domRefs.get(id)).getBoundingClientRect(); 
+    let left = e.clientX - slideOffset.left;
+    let top = e.clientY - slideOffset.top;
+    return {left,top}
+  }
+  setDomRef(id,obj){
+    this.domRefs.set(id,obj);
+  }
   updateElementResizeState(isResizingElement, cursor = null) {
     transaction(() => {
       this.cursorType = cursor;

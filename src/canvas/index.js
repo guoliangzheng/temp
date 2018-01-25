@@ -33,24 +33,11 @@ class Canvas extends Component  {
         window.removeEventListener("load", this.resize);
         window.removeEventListener("resize", this.resize);
       }
-      getDefaultPosition = (type) => {
-        const slideElement = findDOMNode(this.slideRef);
-        const { width, height } = this.getDefaultSize(type);
-        let left = (slideElement.clientWidth / 2) - (width / 2);
-        let top = (slideElement.clientHeight / 2) - (height / 2);
-        const { currentSlide } = this.context.store;
-        const positions = currentSlide.children.reduce((positionHashMap, child) => {
-          const key = `${child.props.style.left}x${child.props.style.top}`;
-          positionHashMap[key] = true; // eslint-disable-line no-param-reassign
-          return positionHashMap;
-        }, {});
-    
-        while (positions[`${left}x${top}`]) {
-          left += 10;
-          top += 10;
-        }
-    
-        return { left, top };
+     
+      getDropPosition=(dropTagId)=>{
+
+         return   this.context.store.getDropPosition(dropTagId);
+
       }
     
       getDefaultSize = (type) => {
@@ -100,7 +87,6 @@ class Canvas extends Component  {
         const slideOffset = findDOMNode(this.slideRef).getBoundingClientRect();
         position.left = (e.clientX - slideOffset.left - (defaultSize.width * scale / 2)) / scale;
         position.top = (e.clientY - slideOffset.top - (defaultSize.height * scale / 2)) / scale;
-    
         const rect = {
           ...position,
           ...defaultSize
@@ -137,15 +123,9 @@ class Canvas extends Component  {
         }); 
       }
     
-      handleDrop = (type) => {
-        const rect = this.state.elementRect || this.getDefaultPosition(type);
-        this.context.store.dropElement(type, {
-          style: {
-            position: "absolute",
-            left: rect.left,
-            top: rect.top
-          }
-        }); 
+      handleDrop = (type,dropTagID, extraProps) => {
+      //   const rect = this.state.elementRect || this.getDefaultPosition(type);
+        this.context.store.dropElement(type,dropTagID,extraProps);  
       } 
       elementFromType = (type) => {
         return null;
@@ -171,9 +151,10 @@ class Canvas extends Component  {
         <div  style={{float:'left', display:'inline-block',width:200}}>
         <ElementList 
           scale={scale}
-          onDragStart={this.handleDragStart}
+        /*   onDragStart={this.handleDragStart}
           onDrag={this.handleDrag}
-          onDragStop={this.handleDragStop}
+          onDragStop={this.handleDragStop} */
+          getDropPosition={this.getDropPosition}
           onDrop={this.handleDrop}
         />
         </div>

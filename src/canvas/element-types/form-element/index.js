@@ -6,11 +6,25 @@ import { observer } from "mobx-react";
 import { List } from 'antd';
 import { Form} from 'antd';
 import FormDesginer from './form-desginer'
+import { DropTarget } from 'react-dnd'
+const boxTarget = {
+	drop(props,monitor) {
+    return { id: props.index}
+	},
+}
+@DropTarget("element-types", boxTarget, (connect, monitor) => ({
+	connectDropTarget: connect.dropTarget(),
+	isOver: monitor.isOver(),
+	canDrop: monitor.canDrop(),
+})) 
 @observer
 export default class FormElement extends Component {
   static propTypes = {
     ...CanvasElementPropTypes,
     rect: PropTypes.object,
+    connectDropTarget: PropTypes.func.isRequired,
+		isOver: PropTypes.bool.isRequired,
+		canDrop: PropTypes.bool.isRequired,
     component: PropTypes.shape({
       props: PropTypes.object
     })
@@ -39,13 +53,15 @@ export default class FormElement extends Component {
     const height = this.props.rect ? this.props.rect.height : componentProps.style.height;
     const data = componentProps.data; 
     const layout = componentProps.layout;
-    return (
+    const { canDrop, isOver, connectDropTarget } = this.props;
+    return connectDropTarget(
       <div 
+        canDrop ={canDrop}
+        isOver ={isOver}
         key={this.props.index}
         className={this.props.classes}
         onMouseDown={this.props.mouseDownAction}
         onDragOver={this.props.dragOverAction}
-        onDrop={()=>{alert('hello')}}
         style={{top:this.props.postions.top,left:this.props.postions.left}}
       >
       <CanvasElement
