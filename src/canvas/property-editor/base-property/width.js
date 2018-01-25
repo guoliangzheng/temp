@@ -36,7 +36,7 @@ export default class Width extends Component {
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>宽度</label>
                 <div >
-                    <input className={styles.propertyControl} type="text" defaultValue={style.width} onChange={this.handleChange}/>
+                    <input className={styles.propertyControl} type="text" value={style.width} onChange={this.handleChange}/>
                 </div>
             </div>
         )

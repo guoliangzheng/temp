@@ -19,10 +19,9 @@ export default class TextProperty extends Component {
 
  
   render() {    
-     const poprtyeChange = this.context.store.getpoprtyeChange;
     return (
       <div>
-        {    console.log(poprtyeChange)}
+      
         <Width/>
         <Height/>
       </div>

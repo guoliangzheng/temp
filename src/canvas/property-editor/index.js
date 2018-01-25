@@ -35,7 +35,9 @@ class PropertyEditor extends Component {
 
   componentDidMount() {
     autorun(() => {
+
       if (this.context.store.currentElement) {
+
         const currentElement =  this.context.store.components.get(this.context.store.currentElement)
 
         this.setState({
@@ -44,21 +46,21 @@ class PropertyEditor extends Component {
         });
         return;
       }
-      this.setState({ hasMenu: false, contextualMenu: null });
+      this.setState({hasMenu: false, contextualMenu: null });
     });
   }
 
   render() {
     const moveMenu = this.state.hasMenu ? styles.slidesInactive : "";
-    const { contextualMenu} = this.state;
+    const { poprtyeChange,contextualMenu} = this.state;
     const Element = propertyEditorMappering.get(contextualMenu);
     if(Element==null){
       return <div></div>
     }
-    
     return (
       <div className={`${styles.editor} ${BLACKLIST_CURRENT_ELEMENT_DESELECT}`}>
-            <Element/>
+            <Element>
+            </Element>
       </div>
     );
   }

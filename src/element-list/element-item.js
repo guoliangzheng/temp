@@ -7,9 +7,30 @@ import {
 } from "../constants";
 import Icon from "../icon";
 import styles from "./element-item.css";
+import { DragSource } from 'react-dnd'
 
 const addedPadding = 2;
+const boxSource = {
+	beginDrag(props) {
+		return {
+			elementType: props.elementType,
+		}
+	},
 
+	endDrag(props, monitor) {
+    const item = monitor.getItem()
+		const dropResult = monitor.getDropResult()
+    console.log("drop",dropResult)
+		if (dropResult) {
+      props.onDrop(props.elementType,dropResult.id)
+		}
+	},
+}
+
+@DragSource("element-types", boxSource, (connect, monitor) => ({
+	connectDragSource: connect.dragSource(),
+	isDragging: monitor.isDragging(),
+}))
 class ElementItem extends Component {
   static propTypes = {
     elementType: PropTypes.string.isRequired,

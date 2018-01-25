@@ -35,7 +35,7 @@ export default class TableColumn extends Component {
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>列信息</label>
                 <div >
-                    <input className={styles.propertyControl} type="text" defaultValue={JSON.stringify(columns)} onChange={this.handleChange}/>
+                    <input className={styles.propertyControl} type="text" value={JSON.stringify(columns)} onChange={this.handleChange}/>
                 </div>
             </div>
         )

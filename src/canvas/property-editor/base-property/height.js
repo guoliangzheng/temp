@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styles from './index.css'
 import { observer } from "mobx-react";
-
+@observer
 export default class Height extends Component {
       
   static contextTypes = {
@@ -34,12 +34,13 @@ export default class Height extends Component {
   render(){
     const currentElement = this.context.store.currentComponents;
     const props = currentElement.props;
+    console.log("height",props.style.height)
     const style = props.style;
     return (
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>高度</label>
                 <div >
-                    <input className={styles.propertyControl} type="text" defaultValue={style.height} onChange={this.handleChange}/>
+                    <input className={styles.propertyControl} type="text" value={style.height} onChange={this.handleChange}/>
                 </div>
             </div>
         )

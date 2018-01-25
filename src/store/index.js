@@ -6,6 +6,7 @@ import elementMap from "../canvas/elements";
 import {ElementTypes} from "../constants"
 import xml2js from'xml2js';
 import  builder from 'xmlbuilder';
+import HttpService from "../httpservice";
 
 
 export default class Store{
@@ -44,6 +45,7 @@ export default class Store{
         this.slide = Immutable.from( {
           parent:null,
           id: id,
+          type:'Slide',
           props: { style: {}, transition: ["slide"] },
           children: []
          })
@@ -191,28 +193,71 @@ export default class Store{
   }
 
   serialize(){
-      this.toxml(this.rootID);
+    this.xml = new Array();
+    this.xml.push('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>');
+    this.toxml(this.rootID);
+    console.log(this.xml.join(""))
+    HttpService.save({
+        url: 'http://127.0.0.1:8080/save',
+        data: {
+            xml:this.xml.join("")
+        },
+        success: res => {
+          /*   console.log(res);
+            if (res.retCode == 0) {
+                this.setState({
+                    liked: true
+                })
+            } else {
+                R_UiService.Toaster(res.retMsg)
+            } */
+        }
+    });
+
+
   }
-  toxml(id){
-  /*   const obj = this.components.get(id)
+  toxml(elementid){
+    /*  const obj = this.components.get(elementid)
     if(!obj) return ;
-    let root =  builder.create('root');
-    root.ele("id",obj.id)
-    
-    if(children ==null) return ;
-    for(let i =0,length = children.length;i<length;i++){
-       this.toxml(children[i]);
-    } */
-   /*  const obj = this.components.get(id)
-    if(!obj) return ;
-    var builder = new xml2js.Builder({cdata:true});
-    var xml = builder.buildObject(obj);
-    console.log(xml)
+    alert(obj.type)
+    const {id,props,type} = obj;
+    if(this.xml==null){
+       this.xml =  builder.create(obj.type);
+    }else{
+      this.xml.ele(obj.type);
+    }
+    this.xml.ele("id",obj.id).up()
+    this.xml.ele("parent",obj.id).up()
     const children = obj.children;
     if(children ==null) return ;
     for(let i =0,length = children.length;i<length;i++){
+      this.xml.ele("children");
        this.toxml(children[i]);
-    }*/
+    }  */
+    const obj = this.components.get(elementid)
+    if(!obj) return ;
+    const {id,parent,props,type,children} = obj;
+    this.xml.push('<'+type+">")
+    this.xml.push('<parent>'+parent+'</parent>')
+    this.xml.push('<type>'+type+'</type>')
+    this.xml.push('<id>'+id+'</id>')
+  /*   var builder = new xml2js.Builder({cdata:true});
+    var xml = builder.buildObject(obj); */
+    console.log('json',JSON.stringify( obj ));
+    for(var key in props ){
+      this.xml.push('<'+key+'><![CDATA['+JSON.stringify( props[key] )+']]></'+key+'>')
+    }
+    this.xml.push('<children>')
+    if(children!=null){
+      for(let i =0,length = children.length;i<length;i++){
+        this.toxml(children[i]);
+      }
+    }
+    this.xml.push('</children>')
+    this.xml.push('</'+type+">");
+
+
+
 
   } 
 }

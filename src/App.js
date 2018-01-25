@@ -7,6 +7,8 @@ import  Provider from './Provider'
 import Canvas from './canvas'
 import Store from './store'
 import {LeftSide,RightSide} from './side' 
+import { DragDropContextProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 import styles from "./App.css";
 class App extends Component {
   render() {
@@ -14,9 +16,11 @@ class App extends Component {
 
     return (
       <div className={styles.container}>
-        <Provider store={store}>
-           <Canvas></Canvas>
-        </Provider>
+         <DragDropContextProvider backend={HTML5Backend}>
+          <Provider store={store}>
+            <Canvas></Canvas>
+          </Provider>
+        </DragDropContextProvider>
       </div>
     );
   }

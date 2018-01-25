@@ -9,7 +9,17 @@ import styles from "./slide.css";
 import * as constraints from "./constraints";
 import SnapLines from "./snap-lines";
 import elementFromType from "./element-types";
-
+import { DropTarget } from 'react-dnd'
+/* const boxTarget = {
+	drop(props,monitor) {
+    return { id: props.index}
+	},
+}
+@DropTarget("element-types", boxTarget, (connect, monitor) => ({
+	connectDropTarget: connect.dropTarget(),
+	isOver: monitor.isOver(),
+	canDrop: monitor.canDrop(),
+})) */
 @observer
 class Slide extends Component {
   static propTypes = {

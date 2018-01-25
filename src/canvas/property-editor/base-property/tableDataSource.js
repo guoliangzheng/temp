@@ -35,7 +35,7 @@ export default class TableDataSource extends Component {
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>数据源</label>
                 <div >
-                    <input className={styles.propertyControl} type="text" defaultValue={JSON.stringify(data)} onChange={this.handleChange}/>
+                    <input className={styles.propertyControl} type="text" value={JSON.stringify(data)} onChange={this.handleChange}/>
                 </div>
             </div>
         )
