@@ -181,8 +181,8 @@ elements[ElementTypes.FORMIITEM] = {
   props: {
     label:'label',
     style: {
-      width: 400,
-      height: 400,
+      width: 200,
+      height: 20,
     },
   },
   children: []

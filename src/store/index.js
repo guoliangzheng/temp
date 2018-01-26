@@ -31,6 +31,7 @@ export default class Store{
     @observable components = null;
     @observable poprtyeChange =0;
     @observable dropTagElementId = null;
+    @observable previeComponents = null;
     domRefs = new Map();
 
     @computed get currentSlide() {
@@ -205,10 +206,26 @@ export default class Store{
 
   serialize(){
     this.xml = new Array();
-    this.xml.push('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>');
+    this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>');
     this.toxml(this.rootID);
-    console.log(this.xml.join(""))
-    HttpService.save({
+    return this.xml.join("");
+  }
+  deserialize(){
+    this.xml = new Array();
+    this.xml.push('<?xml version="1.0" encoding="UTF-8"?>');
+    this.toxml(this.rootID);
+    const xml = this.xml.join("");
+    var parseString = xml2js.parseString;
+    var me = this
+    parseString(xml, function (err, result) {
+        me.previeComponents = result;
+    });
+  }
+  save(){
+      this.xml = new Array();
+      this.xml.push('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>');
+      this.toxml(this.rootID);
+      HttpService.save({
         url: 'http://127.0.0.1:8080/save',
         data: {
             xml:this.xml.join("")
@@ -224,27 +241,8 @@ export default class Store{
             } */
         }
     });
-
-
   }
   toxml(elementid){
-    /*  const obj = this.components.get(elementid)
-    if(!obj) return ;
-    alert(obj.type)
-    const {id,props,type} = obj;
-    if(this.xml==null){
-       this.xml =  builder.create(obj.type);
-    }else{
-      this.xml.ele(obj.type);
-    }
-    this.xml.ele("id",obj.id).up()
-    this.xml.ele("parent",obj.id).up()
-    const children = obj.children;
-    if(children ==null) return ;
-    for(let i =0,length = children.length;i<length;i++){
-      this.xml.ele("children");
-       this.toxml(children[i]);
-    }  */
     const obj = this.components.get(elementid)
     if(!obj) return ;
     const {id,parent,props,type,children} = obj;
@@ -254,10 +252,11 @@ export default class Store{
     this.xml.push('<id>'+id+'</id>')
   /*   var builder = new xml2js.Builder({cdata:true});
     var xml = builder.buildObject(obj); */
-    console.log('json',JSON.stringify( obj ));
+    this.xml.push('<props>')    
     for(var key in props ){
       this.xml.push('<'+key+'><![CDATA['+JSON.stringify( props[key] )+']]></'+key+'>')
     }
+    this.xml.push('</props>')    
     this.xml.push('<children>')
     if(children!=null){
       for(let i =0,length = children.length;i<length;i++){
@@ -266,9 +265,5 @@ export default class Store{
     }
     this.xml.push('</children>')
     this.xml.push('</'+type+">");
-
-
-
-
   } 
 }

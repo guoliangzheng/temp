@@ -12,6 +12,7 @@ import SnapLines from "./snap-lines";
 import * as constraints from "./constraints";
 import Slide from "./slide";
 import PropertyEditor  from './property-editor'
+import { Button } from 'antd';
 
 @observer
 class Canvas extends Component  {
@@ -151,9 +152,6 @@ class Canvas extends Component  {
         <div  style={{float:'left', display:'inline-block',width:200}}>
         <ElementList 
           scale={scale}
-        /*   onDragStart={this.handleDragStart}
-          onDrag={this.handleDrag}
-          onDragStop={this.handleDragStop} */
           getDropPosition={this.getDropPosition}
           onDrop={this.handleDrop}
         />
@@ -166,6 +164,8 @@ class Canvas extends Component  {
               pointerEvents: isDraggingSlide ? "none" : "auto"
             }}
           >
+          <Button onClick={()=>{alert(this.context.store.serialize())}} >保存</Button>  <Button onClick={()=>this.context.store.save()} >生成</Button> 
+          <Button onClick={()=>this.context.store.deserialize()} >预览</Button>
           <div className={styles.canvas} style={{float:'left',display:'inline-block',}} id="canvas" ref="container">
               <div
                 style={{

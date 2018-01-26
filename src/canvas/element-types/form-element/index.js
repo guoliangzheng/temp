@@ -10,7 +10,14 @@ import { DropTarget } from 'react-dnd'
 const boxTarget = {
 	drop(props,monitor) {
     return { id: props.index}
-	},
+  },
+  hover(props, monitor, component) {
+  
+  },
+  canDrop(props, monitor){
+    console.log("drop",monitor.canDrop)
+    return true;
+  }
 }
 @DropTarget("element-types", boxTarget, (connect, monitor) => ({
 	connectDropTarget: connect.dropTarget(),
@@ -53,11 +60,9 @@ export default class FormElement extends Component {
     const height = this.props.rect ? this.props.rect.height : componentProps.style.height;
     const data = componentProps.data; 
     const layout = componentProps.layout;
-    const { canDrop, isOver, connectDropTarget } = this.props;
+    const { canDrop, isOverisOver, connectDropTarget } = this.props;
     return connectDropTarget(
       <div 
-        canDrop ={canDrop}
-        isOver ={isOver}
         key={this.props.index}
         className={this.props.classes}
         onMouseDown={this.props.mouseDownAction}

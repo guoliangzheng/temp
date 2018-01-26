@@ -248,8 +248,7 @@ class Slide extends Component {
           resizeVertical={isSelected && !store.isDragging}
           canArrange={isSelected && !store.isResizing && !store.isDragging}
           draggable
-        >
-        
+        > 
         {childObj.children!=null && childObj.children.map(this.renderChild) }
         </Element>
     );
@@ -263,8 +262,8 @@ class Slide extends Component {
       [styles.isDragging]: this.context.store.isDragging
     });
     const currentSlide = components.get(rootID);
-    console.log("slide",currentSlide.props.style)
     const { canDrop, isOver, connectDropTarget } = this.props;
+
     return connectDropTarget(
       <div canDrop={canDrop} isOver={isOver} ref={(ref)=>{this.context.store.setDomRef(rootID,ref)}}  connectDropTarget={connectDropTarget} className={classes} style={{ ...currentSlide.props.style }} id={rootID}>
         {currentSlide && rootID && currentSlide.children.map(this.renderChild)}
