@@ -158,13 +158,14 @@ class Canvas extends Component  {
         </div>
         <div
             style={{
-              width: 1000, 
+              width: 1000,
               height: 700,
               cursor: isDraggingElement ? "move" : "auto",
               pointerEvents: isDraggingSlide ? "none" : "auto"
             }}
           >
-          <Button onClick={()=>{alert(this.context.store.serialize())}} >保存</Button>  <Button onClick={()=>this.context.store.save()} >生成</Button> 
+          <Button onClick={()=>{alert(this.context.store.serialize())}} >保存</Button>
+          <Button onClick={()=>this.context.store.save()} >生成</Button>
           <Button onClick={()=>this.context.store.deserialize()} >预览</Button>
           <div className={styles.canvas} style={{float:'left',display:'inline-block',}} id="canvas" ref="container">
               <div
