@@ -1,5 +1,5 @@
 import { observable, computed, transaction, asReference,autorun } from "mobx";
-import Immutable from "seamless-immutable";
+import Immutable, { from } from "seamless-immutable";
 import { merge, mergeWith, pick, omit } from "lodash";
 import uuid from '../util/uuid'
 import elementMap from "../canvas/elements";
@@ -117,11 +117,9 @@ export default class Store{
   setCurrentElement(id) {
       this.currentElement = id;
   }
-
   setMouserOverElement(id){
     this.mouseOverElement = id;
   }
-
   updateElementProps(props) {
       if(this.currentElement==null) return;
       const currentElement = this.components.get(this.currentElement);
@@ -165,21 +163,25 @@ export default class Store{
     let formItem = elementMap[ElementTypes.FORMIITEM]
     formItem.props.label = label;
     const formItemId = uuid();
-    formItem= {
+ /*    formItem= {
       ...formItem,
       parent:formID,
       id: formItemId,
       children:[]
-    };
+    }; */
+    formItem.parent = formID;
+    formItem.id  = formItemId;
 
     let element = elementMap[type];
     const elementid = uuid();
-    element= {
+    element.parent = formItemId;
+    element.id = elementid;
+    /* element= {
       ...element,
       parent:formItemId,
       id: elementid,
       children:[]
-    };
+    }; */
     form.children.push(formItemId);
     formItem.children.push(elementid);
     this.components.set(formItemId,formItem);
@@ -206,26 +208,34 @@ export default class Store{
     this.xml = new Array();
     this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>'); 
     this.toxml(this.rootID); 
-     return this.xml.join("");
+    console.log("xml",this.xml.join(""));
+    return this.xml.join("");
   }
-  analysis(){
-    this.xml = new Array();
-    this.xml.push('<?xml version="1.0" encoding="UTF-8"?>');
-    this.toxml(this.rootID);
-    const xml = this.xml.join("");
+  analysis(xml){
     var parseString = xml2js.parseString;
     var me = this;
     parseString(xml, function (err, result) {
        me.deserializeRoot(result);
     });
+    transaction(() => {
+     /*  this.rootID = this.temprootID;
+      this.components = this.tempCompents; */
+    })
   }
 
   deserializeRoot(xmlNode){
+    this.tempCompents = new Map();
     for(var key in xmlNode){
         const root = xmlNode[key];
         const {type,children} =root;
         const element = elementMap[type]; 
-       console.log("element", element.deserialize(root));
+        const rootElement = element.deserialize(root);
+        console.log("rootElement",rootElement);
+        transaction(() => {
+          this.rootID =rootElement.id;
+          this.components = new Map();
+          this.components.set(rootElement.id,rootElement);
+        })
         this.deserializeChildren(children);     
     }
   }
@@ -239,11 +249,27 @@ export default class Store{
                 let node = nodeArr[i];
                 const {children,type} = node;
                 const element = elementMap[type];  
-                console.log("element",  element.deserialize(node));
+                const child= element.deserialize(node);
+                transaction(() => {
+                  this.components.set(child.id,child);
+                })
                 this.deserializeChildren(children);
         }  
       }
     
+  }
+
+  load(){
+    const me = this;
+    HttpService.query({
+        url:'test.xml',
+        success:res=>{
+          me.analysis(res); 
+        }
+
+    })
+
+
   }
   save(){
       this.xml = new Array();

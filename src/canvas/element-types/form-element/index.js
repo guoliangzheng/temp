@@ -9,15 +9,8 @@ import FormDesginer from './form-desginer'
 import { DropTarget } from 'react-dnd'
 const boxTarget = {
 	drop(props,monitor) {
-    return { id: props.index}
-  },
-  hover(props, monitor, component) {
-  
-  },
-  canDrop(props, monitor){
-    console.log("drop",monitor.canDrop)
-    return true;
-  }
+    return { id: props.index};
+  }, 
 }
 @DropTarget("element-types", boxTarget, (connect, monitor) => ({
 	connectDropTarget: connect.dropTarget(),
@@ -66,8 +59,8 @@ export default class FormElement extends Component {
         key={this.props.index}
         className={this.props.classes}
         onMouseDown={this.props.mouseDownAction}
-        onDragOver={this.props.dragOverAction}
-        style={{top:this.props.postions.top,left:this.props.postions.left}}
+/*         onDragOver={this.props.dragOverAction}
+ */        style={{top:this.props.postions.top,left:this.props.postions.left}}
       >
       <CanvasElement
         {...pick(this.props, Object.keys(CanvasElementPropTypes))}

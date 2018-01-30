@@ -8,7 +8,7 @@ export default class HttpService {
             if (request.readyState == 4) {
                 var status = request.status;
                 if (status >= 200 && status < 300) {
-                    var res = JSON.parse(request.responseText);
+                    var res = request.responseText;
                     config.success && config.success(res);
                 } else {
                     return config.fail && config.fail(status);

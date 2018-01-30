@@ -19,7 +19,8 @@ const boxSource = {
 
 	endDrag(props, monitor) {
     const item = monitor.getItem()
-		const dropResult = monitor.getDropResult()
+    const dropResult = monitor.getDropResult()
+    console.log("dropResult",dropResult)
 		if (dropResult) {
       let {left,top}= props.getDropPosition(dropResult.id);
       props.onDrop(props.elementType,dropResult.id,{style:
@@ -42,14 +43,7 @@ class ElementItem extends Component {
     connectDragSource: PropTypes.func.isRequired,
 		isDragging: PropTypes.bool.isRequired,
     elementType: PropTypes.string.isRequired,
-    elementLeft: PropTypes.number.isRequired,
-    elementTop: PropTypes.number.isRequired,
-    elementWidth: PropTypes.number.isRequired,
-    elementHeight: PropTypes.number.isRequired,
-    onDragStart: PropTypes.func.isRequired,
-    onDrag: PropTypes.func.isRequired,
-    onDragStop: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired,
+
     scale: PropTypes.number
   };
 
@@ -69,142 +63,7 @@ class ElementItem extends Component {
     };
   }
 
-  handleTouchStart = (ev) => {
-    ev.preventDefault();
-    this.handleMouseDown(ev.touches[0]);
-  }
-
-  handleTouchMove = (ev) => {
-    ev.preventDefault();
-    this.handleMouseMove(ev.touches[0]);
-  }
-
-  handleMouseMove = ({ pageX, pageY, offsetX, offsetY, clientX, clientY, target: { id } }) => {
-    const { mouseStart: [x, y], isOverCanvasPosition } = this.state;
-    const newDelta = [pageX - x, pageY - y];
-
-    let isUpdating = false;
-    let newOverCanvasPosition = null;
-    newOverCanvasPosition = [offsetX, offsetY];
-
-    /* if (id === "canvas" || id === "slide") {
-      newOverCanvasPosition = [offsetX, offsetY];
-
-    // Switching from canvas element back to icon, do not animate icon
-    } else if (isOverCanvasPosition !== null) {
-      isUpdating = true;
-    }
- */
-    const mousePosition = {
-      clientX,
-      clientY
-    };
-
-    if (!newOverCanvasPosition && this.state.isOverCanvasPosition) {
-      this.props.onDragStop();
-    } else if (newOverCanvasPosition && !this.state.isOverCanvasPosition) {
-      this.props.onDragStart(mousePosition, this.props.elementType);
-    }
-
-    if (newOverCanvasPosition) {
-      this.props.onDrag(mousePosition);
-    }
-    this.setState({
-      delta: newDelta,
-      // TODO: Clean up these two properties
-      canvasOffset: [offsetX, offsetY],
-      isOverCanvasPosition: newOverCanvasPosition,
-      isUpdating
-    }, () => {
-      this.setState({
-        isUpdating: false
-      });
-    });
-  }
-
  
-  handleMouseDown = (ev) => {
-    ev.preventDefault();
-    ev.persist();
-    const { pageX, pageY } = ev;
-    
-    window.addEventListener("mouseup", this.handleMouseUp);
-    window.addEventListener("touchend", this.handleMouseUp);
-
-    // Only do drag if we hold the mouse down for a bit
-    this.mouseClickTimeout = setTimeout(() => {
-      try{
-      this.mouseClickTimeout = null;
-
-      this.context.store.updateElementDraggingState(true, true);
-
-      // Make the cursor dragging everywhere
-      document.body.style.cursor = "-webkit-grabbing";
-
-      this.setState({
-        mouseOffset: [(addedPadding / 2), (addedPadding / 2)],
-        delta: [0, 0],
-        mouseStart: [pageX, pageY],
-        isPressed: true
-      });
-
-      window.addEventListener("touchmove", this.handleTouchMove);
-      window.addEventListener("mousemove", this.handleMouseMove);
-      }catch(e){alert('出错了')}
-    }, 150);
-  }
-
-  handleMouseUp = (event) => {
-    if (this.mouseClickTimeout || this.mouseClickTimeout === 0) {
-      window.removeEventListener("mouseup", this.handleMouseUp);
-      window.removeEventListener("touchend", this.handleMouseUp);
-
-      this.mouseClickTimeout = null;
-
-      this.props.onDrop(this.props.elementType);
-      this.props.onDragStop();
-
-      return;
-    }
-
-    window.removeEventListener("touchmove", this.handleTouchMove);
-    window.removeEventListener("touchend", this.handleMouseUp);
-    window.removeEventListener("mousemove", this.handleMouseMove);
-    window.removeEventListener("mouseup", this.handleMouseUp);
-
-    // Reset the cursor dragging to auto
-    document.body.style.cursor = "auto";
-
-    const state = {
-      delta: [0, 0],
-      mouseOffset: [0, 0],
-      mouseStart: [0, 0],
-      canvasOffset: [0, 0],
-      isOverCanvasPosition: null,
-      isPressed: false
-    };
-    if (this.state.isOverCanvasPosition) {
-      // Don't show return animation if dropping the element on the canvas
-      state.isUpdating = true;
-
-      this.props.onDrop(this.props.elementType, [
-        this.state.canvasOffset[0],
-        this.state.canvasOffset[1]
-      ]);
-      this.props.onDragStop();
-    }
-
-    this.context.store.updateElementDraggingState(false);
-
-    this.setState(state, () => {
-      setTimeout(() => {
-        this.setState({
-          isUpdating: false
-        });
-      }, 1);
-    });
-  }
-
 
   render() {
     const {
@@ -240,9 +99,7 @@ class ElementItem extends Component {
 		const { isDragging, connectDragSource } = this.props 
     return  connectDragSource(
       <div
-        /* onMouseDown={this.handleMouseDown}
-        onTouchStart={this.handleTouchStart}
-         */className={`${styles.wrapper} ${BLACKLIST_CURRENT_ELEMENT_DESELECT}`}
+        className={`${styles.wrapper} ${BLACKLIST_CURRENT_ELEMENT_DESELECT}`}
         style={{
           width: elementWidth,
           height: elementHeight,

@@ -6,6 +6,8 @@ import { ElementTypes } from "../../constants";
 import Text from './text';
 import Slide from './slide'
 import Image from './image'
+import Element  from './element'
+import From from './form'
 const elements = {};
 
 elements[ElementTypes.SLIDE] = new Slide({
@@ -50,7 +52,7 @@ elements[ElementTypes.IMAGE] =new Image( {
   children: []
 });
 
-elements[ElementTypes.BOX] = {
+elements[ElementTypes.BOX] = new Element({
   type: ElementTypes.BOX,
   resizeVertical: true,
   props: {
@@ -68,8 +70,8 @@ elements[ElementTypes.BOX] = {
     }
   },
   children: []
-};
-elements[ElementTypes.LAYOUT] = {
+});
+elements[ElementTypes.LAYOUT] = new Element({
   type: ElementTypes.LAYOUT,
   resizeVertical: true,
   props: {
@@ -85,9 +87,9 @@ elements[ElementTypes.LAYOUT] = {
     }
   },
   children: []
-};
+});
 
-elements[ElementTypes.LIST] = {
+elements[ElementTypes.LIST] = new Element({
   type: ElementTypes.LIST,
   props: {
     style: {
@@ -115,9 +117,9 @@ elements[ElementTypes.LIST] = {
     ]
   },
   children: []
-};
+});
 
-elements[ElementTypes.TABLE] = {
+elements[ElementTypes.TABLE] = new Element( {
   type: ElementTypes.TABLE,
   resizeVertical: true,
   props: {
@@ -170,10 +172,10 @@ elements[ElementTypes.TABLE] = {
     }]
   },
   children: []
-};
+});
 
 
-elements[ElementTypes.FORM] = {
+elements[ElementTypes.FORM] = new From({
   type: ElementTypes.FORM,
   props: {
     layout:"horizontal",
@@ -185,10 +187,10 @@ elements[ElementTypes.FORM] = {
     },
   },
   children: []
-};
+});
 
 
-elements[ElementTypes.FORMIITEM] = {
+elements[ElementTypes.FORMIITEM] =new Element( {
   type: ElementTypes.FORMIITEM,
   props: {
     label:'label',
@@ -198,6 +200,5 @@ elements[ElementTypes.FORMIITEM] = {
     },
   },
   children: []
-};
-
+});
 export default elements;

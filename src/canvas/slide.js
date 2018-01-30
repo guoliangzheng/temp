@@ -206,7 +206,6 @@ class Slide extends Component {
 
 
   renderChild = (id) => {
-
 /*     const id = child.id;
  */ const store = this.context.store;
     const isSelected = store.currentElement === id;
