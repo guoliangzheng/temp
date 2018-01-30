@@ -13,7 +13,7 @@ import * as constraints from "./constraints";
 import Slide from "./slide";
 import PropertyEditor  from './property-editor'
 import { Button } from 'antd';
-
+import ComponentTree from './componentTree'
 @observer
 class Canvas extends Component  {
      static contextTypes = {
@@ -80,6 +80,7 @@ class Canvas extends Component  {
       }
     
       handleDragStart = (e, type) => {
+        console.log("dragstart");
         this.context.store.setCurrentElement(null);
     
         const scale = this.context.store.scale;
@@ -155,6 +156,9 @@ class Canvas extends Component  {
           getDropPosition={this.getDropPosition}
           onDrop={this.handleDrop}
         />
+        </div>
+        <div  style={{float:'left', display:'inline-block',width:200}}>
+        <ComponentTree />
         </div>
         <div
             style={{
