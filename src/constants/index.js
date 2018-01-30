@@ -3,6 +3,7 @@ export const DraggableTypes = {
 };
 
 export const ElementTypes = {
+  SLIDE:'Slide',
   HEADING: "Heading",
   TEXT: "Text",
   IMAGE: "Image",

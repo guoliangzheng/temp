@@ -3,9 +3,21 @@ import React from "react";
 import plotlyPlaceholder from "../../assets/images/plotly-placeholder.png";
 import imagePlaceholder from "../../assets/icons/image.svg";
 import { ElementTypes } from "../../constants";
-
+import Text from './text';
+import Slide from './slide'
+import Image from './image'
 const elements = {};
-elements[ElementTypes.TEXT] = {
+
+elements[ElementTypes.SLIDE] = new Slide({
+  type: ElementTypes.SLIDE,
+  id:'',
+  parent:'',
+  props: {
+    props: { style: {height:'1000',width:'700'}, transition: ["slide"] },
+  },
+  children: []
+});
+elements[ElementTypes.TEXT] =new Text( {
   type: ElementTypes.TEXT,
   defaultWidth: 52,
   defaultHeight: 36,
@@ -24,8 +36,8 @@ elements[ElementTypes.TEXT] = {
     }
   },
   children: null
-};
-elements[ElementTypes.IMAGE] = {
+});
+elements[ElementTypes.IMAGE] =new Image( {
   type: ElementTypes.IMAGE,
   props: {
     src: `http://jxdinfo.com//r/cms/www/default/images/hz9.jpg`,
@@ -36,7 +48,7 @@ elements[ElementTypes.IMAGE] = {
     }
   },
   children: []
-};
+});
 
 elements[ElementTypes.BOX] = {
   type: ElementTypes.BOX,

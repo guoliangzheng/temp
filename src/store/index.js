@@ -8,6 +8,8 @@ import xml2js from'xml2js';
 import  builder from 'xmlbuilder';
 import HttpService from "../httpservice";
 import { findDOMNode } from "react-dom";
+import Slide from "../canvas/elements/slide"
+import Element from "../canvas/elements/element";
 
 export default class Store{
     @observable rootID = null;
@@ -45,7 +47,7 @@ export default class Store{
       }else{
         let id = uuid();
         this.rootID = id;
-        this.slide = Immutable.from( {
+        this.slide = new Slide({
           parent:null,
           id: id,
           type:'Slide',
@@ -81,15 +83,11 @@ export default class Store{
     const element = elementMap[elementType];
     const id = uuid();
     const mergedProps = merge(element.props, extraProps);
-    const child= {
-      ...element,
-      parent:selectItemid,
-      props: mergedProps,
-      id: id,
-      children:[]
-    }
+    element.props = mergedProps;
+    element.id = id;
+    element.parent = selectItemid;
     parent.children.push(id);
-    this.components.set(id,child);
+    this.components.set(id,element);
     
   }
   getDropPosition(dropTagID){
@@ -206,20 +204,46 @@ export default class Store{
 
   serialize(){
     this.xml = new Array();
-    this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>');
-    this.toxml(this.rootID);
-    return this.xml.join("");
+    this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>'); 
+    this.toxml(this.rootID); 
+     return this.xml.join("");
   }
-  deserialize(){
+  analysis(){
     this.xml = new Array();
     this.xml.push('<?xml version="1.0" encoding="UTF-8"?>');
     this.toxml(this.rootID);
     const xml = this.xml.join("");
     var parseString = xml2js.parseString;
-    var me = this
+    var me = this;
     parseString(xml, function (err, result) {
-        me.previeComponents = result;
+       me.deserializeRoot(result);
     });
+  }
+
+  deserializeRoot(xmlNode){
+    for(var key in xmlNode){
+        const root = xmlNode[key];
+        const {type,children} =root;
+        const element = elementMap[type]; 
+       console.log("element", element.deserialize(root));
+        this.deserializeChildren(children);     
+    }
+  }
+  deserializeChildren(nodes){
+    if(nodes==null || nodes.length==0) return;
+
+       for(let key in nodes[0]){
+         let nodeArr = nodes[0][key];
+  
+         for(let i=0,length=nodeArr.length;i<length;i++ ){
+                let node = nodeArr[i];
+                const {children,type} = node;
+                const element = elementMap[type];  
+                console.log("element",  element.deserialize(node));
+                this.deserializeChildren(children);
+        }  
+      }
+    
   }
   save(){
       this.xml = new Array();
@@ -243,20 +267,11 @@ export default class Store{
     });
   }
   toxml(elementid){
-    const obj = this.components.get(elementid)
+    const obj = this.components.get(elementid);
     if(!obj) return ;
-    const {id,parent,props,type,children} = obj;
-    this.xml.push('<'+type+">")
-    this.xml.push('<parent>'+parent+'</parent>')
-    this.xml.push('<type>'+type+'</type>')
-    this.xml.push('<id>'+id+'</id>')
-  /*   var builder = new xml2js.Builder({cdata:true});
-    var xml = builder.buildObject(obj); */
-    this.xml.push('<props>')    
-    for(var key in props ){
-      this.xml.push('<'+key+'><![CDATA['+JSON.stringify( props[key] )+']]></'+key+'>')
-    }
-    this.xml.push('</props>')    
+    const {id,children,type} = obj;
+
+    this.xml.push(obj.serializeStart(obj).join(""));
     this.xml.push('<children>')
     if(children!=null){
       for(let i =0,length = children.length;i<length;i++){
@@ -264,6 +279,6 @@ export default class Store{
       }
     }
     this.xml.push('</children>')
-    this.xml.push('</'+type+">");
+    this.xml.push(obj.serializeEnd(type));
   } 
 }
