@@ -20,7 +20,6 @@ export default class ImageProperty extends Component {
      const poprtyeChange = this.context.store.getpoprtyeChange;
     return (
       <div>
-        {    console.log(poprtyeChange)}
         <Width/>
         <Height/>
       </div>

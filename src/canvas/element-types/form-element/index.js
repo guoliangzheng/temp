@@ -9,8 +9,14 @@ import FormDesginer from './form-desginer'
 import { DropTarget } from 'react-dnd'
 const boxTarget = {
 	drop(props,monitor) {
+    if(monitor.getDropResult()){
+      return {
+        id: monitor.getDropResult().id,
+      };
+    }      
     return { id: props.index};
   }, 
+ 
 }
 @DropTarget("element-types", boxTarget, (connect, monitor) => ({
 	connectDropTarget: connect.dropTarget(),

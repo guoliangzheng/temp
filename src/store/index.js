@@ -230,7 +230,6 @@ export default class Store{
         const {type,children} =root;
         const element = elementMap[type]; 
         const rootElement = element.deserialize(root);
-        console.log("rootElement",rootElement);
         transaction(() => {
           this.rootID =rootElement.id;
           this.components = new Map();

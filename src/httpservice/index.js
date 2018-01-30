@@ -44,7 +44,6 @@ export default class HttpService {
                 var status = request.status;
                 if (status >= 200 && status < 300) {
                     var res = request.responseText;
-                    console.log(res);
                     config.success && config.success(res);
                 } else {
                     config.fail && config.fail(status);
@@ -70,7 +69,6 @@ export default class HttpService {
                 var status = xhr.status;
                 if (status >= 200 && status < 300) {
                     var res = JSON.parse(xhr.responseText);
-                    console.log(res);
                     config.success && config.success(res);
                 } else {
                     config.fail && config.fail(status);
