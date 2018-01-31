@@ -14,7 +14,8 @@ export const ElementTypes = {
   LAYOUT:'Layout',
   LINK: "Link",
   TABLE: "Table",
-  IFRAME: "IFrame"
+  IFRAME: "IFrame",
+  COXCOMB:"Coxcomb",
 };
 export const IconTypes = {
   ...ElementTypes

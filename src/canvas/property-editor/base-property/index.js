@@ -4,11 +4,13 @@ import TableColumn from './tableColumn'
 import TableDataSource from './tableDataSource'
 import ListDataSource from './listDataSource'
 import Layout from './layout'
+import ComCobxData from './comCobxData'
 export {
             Width,
             Height,
             TableColumn,
             TableDataSource,
             ListDataSource,
-            Layout
+            Layout,
+            ComCobxData
         }
