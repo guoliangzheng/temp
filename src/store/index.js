@@ -12,6 +12,8 @@ import Slide from "../canvas/elements/slide"
 import Element from "../canvas/elements/element";
 
 export default class Store{
+    memroyXml = null;
+
     @observable rootID = null;
     @observable width = 0;
     @observable height = 0;
@@ -209,6 +211,7 @@ export default class Store{
     this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>'); 
     this.toxml(this.rootID); 
     console.log("xml",this.xml.join(""));
+    this.memroyXml = this.xml.join("");
     return this.xml.join("");
   }
   analysis(xml){
@@ -260,14 +263,15 @@ export default class Store{
 
   load(){
     const me = this;
-    HttpService.query({
+    me.analysis(this.memroyXml); 
+    /* HttpService.query({
         url:'test.xml',
         success:res=>{
           me.analysis(res); 
         }
 
     })
-
+ */
 
   }
   save(){
