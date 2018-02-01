@@ -13,7 +13,7 @@ import * as constraints from "./constraints";
 import Slide from "./slide";
 import PropertyEditor  from './property-editor'
 import { Button } from 'antd';
-
+import ComponentTree from './componentTree'
 @observer
 class Canvas extends Component  {
      static contextTypes = {
@@ -80,6 +80,7 @@ class Canvas extends Component  {
       }
     
       handleDragStart = (e, type) => {
+        console.log("dragstart");
         this.context.store.setCurrentElement(null);
     
         const scale = this.context.store.scale;
@@ -156,17 +157,20 @@ class Canvas extends Component  {
           onDrop={this.handleDrop}
         />
         </div>
+        <div  style={{float:'left', display:'inline-block',width:200}}>
+        <ComponentTree />
+        </div>
         <div
             style={{
-              width: 1000,
+              width: 1000, 
               height: 700,
               cursor: isDraggingElement ? "move" : "auto",
               pointerEvents: isDraggingSlide ? "none" : "auto"
             }}
           >
-          <Button onClick={()=>{alert(this.context.store.serialize())}} >保存</Button>
-          <Button onClick={()=>this.context.store.save()} >生成</Button>
-          <Button onClick={()=>this.context.store.deserialize()} >预览</Button>
+           <Button onClick={()=>{this.context.store.load()}} >加载</Button>
+          <Button onClick={()=>{alert(this.context.store.serialize())}} >保存</Button>  <Button onClick={()=>this.context.store.save()} >生成</Button> 
+          <Button onClick={()=>this.context.store.analysis()} >预览</Button>
           <div className={styles.canvas} style={{float:'left',display:'inline-block',}} id="canvas" ref="container">
               <div
                 style={{

@@ -12,8 +12,15 @@ import elementFromType from "./element-types";
 import { DropTarget } from 'react-dnd'
 const boxTarget = {
 	drop(props,monitor) {
+
+    if(monitor.getDropResult()){
+      return {
+        id: monitor.getDropResult().id,
+      };
+    }      
     return { id: props.index}
-	},
+  },
+ 
 }
 @DropTarget("element-types", boxTarget, (connect, monitor) => ({
 	connectDropTarget: connect.dropTarget(),
@@ -206,7 +213,6 @@ class Slide extends Component {
 
 
   renderChild = (id) => {
-
 /*     const id = child.id;
  */ const store = this.context.store;
     const isSelected = store.currentElement === id;

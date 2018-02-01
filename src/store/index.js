@@ -1,5 +1,5 @@
 import { observable, computed, transaction, asReference,autorun } from "mobx";
-import Immutable from "seamless-immutable";
+import Immutable, { from } from "seamless-immutable";
 import { merge, mergeWith, pick, omit } from "lodash";
 import uuid from '../util/uuid'
 import elementMap from "../canvas/elements";
@@ -8,6 +8,8 @@ import xml2js from'xml2js';
 import  builder from 'xmlbuilder';
 import HttpService from "../httpservice";
 import { findDOMNode } from "react-dom";
+import Slide from "../canvas/elements/slide"
+import Element from "../canvas/elements/element";
 
 export default class Store{
     @observable rootID = null;
@@ -45,7 +47,7 @@ export default class Store{
       }else{
         let id = uuid();
         this.rootID = id;
-        this.slide = Immutable.from( {
+        this.slide = new Slide({
           parent:null,
           id: id,
           type:'Slide',
@@ -81,15 +83,11 @@ export default class Store{
     const element = elementMap[elementType];
     const id = uuid();
     const mergedProps = merge(element.props, extraProps);
-    const child= {
-      ...element,
-      parent:selectItemid,
-      props: mergedProps,
-      id: id,
-      children:[]
-    }
+    element.props = mergedProps;
+    element.id = id;
+    element.parent = selectItemid;
     parent.children.push(id);
-    this.components.set(id,child);
+    this.components.set(id,element);
     
   }
   getDropPosition(dropTagID){
@@ -119,11 +117,9 @@ export default class Store{
   setCurrentElement(id) {
       this.currentElement = id;
   }
-
   setMouserOverElement(id){
     this.mouseOverElement = id;
   }
-
   updateElementProps(props) {
       if(this.currentElement==null) return;
       const currentElement = this.components.get(this.currentElement);
@@ -167,21 +163,25 @@ export default class Store{
     let formItem = elementMap[ElementTypes.FORMIITEM]
     formItem.props.label = label;
     const formItemId = uuid();
-    formItem= {
+ /*    formItem= {
       ...formItem,
       parent:formID,
       id: formItemId,
       children:[]
-    };
+    }; */
+    formItem.parent = formID;
+    formItem.id  = formItemId;
 
     let element = elementMap[type];
     const elementid = uuid();
-    element= {
+    element.parent = formItemId;
+    element.id = elementid;
+    /* element= {
       ...element,
       parent:formItemId,
       id: elementid,
       children:[]
-    };
+    }; */
     form.children.push(formItemId);
     formItem.children.push(elementid);
     this.components.set(formItemId,formItem);
@@ -206,20 +206,69 @@ export default class Store{
 
   serialize(){
     this.xml = new Array();
-    this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>');
-    this.toxml(this.rootID);
+    this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>'); 
+    this.toxml(this.rootID); 
+    console.log("xml",this.xml.join(""));
     return this.xml.join("");
   }
-  deserialize(){
-    this.xml = new Array();
-    this.xml.push('<?xml version="1.0" encoding="UTF-8"?>');
-    this.toxml(this.rootID);
-    const xml = this.xml.join("");
+  analysis(xml){
     var parseString = xml2js.parseString;
-    var me = this
+    var me = this;
     parseString(xml, function (err, result) {
-        me.previeComponents = result;
+       me.deserializeRoot(result);
     });
+    transaction(() => {
+     /*  this.rootID = this.temprootID;
+      this.components = this.tempCompents; */
+    })
+  }
+
+  deserializeRoot(xmlNode){
+    this.tempCompents = new Map();
+    for(var key in xmlNode){
+        const root = xmlNode[key];
+        const {type,children} =root;
+        const element = elementMap[type]; 
+        const rootElement = element.deserialize(root);
+        transaction(() => {
+          this.rootID =rootElement.id;
+          this.components = new Map();
+          this.components.set(rootElement.id,rootElement);
+        })
+        this.deserializeChildren(children);     
+    }
+  }
+  deserializeChildren(nodes){
+    if(nodes==null || nodes.length==0) return;
+
+       for(let key in nodes[0]){
+         let nodeArr = nodes[0][key];
+  
+         for(let i=0,length=nodeArr.length;i<length;i++ ){
+                let node = nodeArr[i];
+                const {children,type} = node;
+                const element = elementMap[type];  
+                const child= element.deserialize(node);
+                transaction(() => {
+                  this.components.set(child.id,child);
+                })
+                this.deserializeChildren(children);
+        }  
+      }
+    
+  }
+
+  load(){
+    const me = this;
+    HttpService.query({
+        url:'test.xml',
+        success:res=>{
+          me.analysis(res); 
+        }
+
+    })
+
+
   }
   save(){
       this.xml = new Array();
@@ -243,20 +292,11 @@ export default class Store{
     });
   }
   toxml(elementid){
-    const obj = this.components.get(elementid)
+    const obj = this.components.get(elementid);
     if(!obj) return ;
-    const {id,parent,props,type,children} = obj;
-    this.xml.push('<'+type+">")
-    this.xml.push('<parent>'+parent+'</parent>')
-    this.xml.push('<type>'+type+'</type>')
-    this.xml.push('<id>'+id+'</id>')
-  /*   var builder = new xml2js.Builder({cdata:true});
-    var xml = builder.buildObject(obj); */
-    this.xml.push('<props>')    
-    for(var key in props ){
-      this.xml.push('<'+key+'><![CDATA['+JSON.stringify( props[key] )+']]></'+key+'>')
-    }
-    this.xml.push('</props>')    
+    const {id,children,type} = obj;
+
+    this.xml.push(obj.serializeStart(obj).join(""));
     this.xml.push('<children>')
     if(children!=null){
       for(let i =0,length = children.length;i<length;i++){
@@ -264,6 +304,6 @@ export default class Store{
       }
     }
     this.xml.push('</children>')
-    this.xml.push('</'+type+">");
+    this.xml.push(obj.serializeEnd(type));
   } 
 }

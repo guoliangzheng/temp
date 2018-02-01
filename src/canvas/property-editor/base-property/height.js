@@ -34,7 +34,6 @@ export default class Height extends Component {
   render(){
     const currentElement = this.context.store.currentComponents;
     const props = currentElement.props;
-    console.log("height",props.style.height)
     const style = props.style;
     return (
             <div className={styles.propertyGroup}>

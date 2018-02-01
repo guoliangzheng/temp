@@ -7,6 +7,7 @@ import TableElement from "./table-element"
 import ListElement from "./list-element"
 import FormItem from './fromItem-element'
 import Form from './form-element'
+import CoxComb  from './coxcomb-element'
 const elementFromType = new Map();
 elementFromType.set(ElementTypes.TEXT,TextElement);
 elementFromType.set(ElementTypes.IMAGE,ImageElement);
@@ -16,6 +17,6 @@ elementFromType.set(ElementTypes.TABLE,TableElement);
 elementFromType.set(ElementTypes.LIST,ListElement);
 elementFromType.set(ElementTypes.FORMIITEM,FormItem);
 elementFromType.set(ElementTypes.FORM,Form);
-
+elementFromType.set(ElementTypes.COXCOMB,CoxComb);
 
 export default elementFromType

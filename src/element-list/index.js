@@ -13,7 +13,8 @@ const elements = [
                     ElementTypes.BOX,
                     ElementTypes.LAYOUT,
                     ElementTypes.FORM,
-                    ElementTypes.FORMIITEM
+                    ElementTypes.FORMIITEM,
+                    ElementTypes.COXCOMB
                   ];
 const elementWidth = 60;
 const elementHeight = 48;

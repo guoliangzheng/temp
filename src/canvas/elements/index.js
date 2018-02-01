@@ -3,9 +3,23 @@ import React from "react";
 import plotlyPlaceholder from "../../assets/images/plotly-placeholder.png";
 import imagePlaceholder from "../../assets/icons/image.svg";
 import { ElementTypes } from "../../constants";
-
+import Text from './text';
+import Slide from './slide'
+import Image from './image'
+import Element  from './element'
+import From from './form'
 const elements = {};
-elements[ElementTypes.TEXT] = {
+
+elements[ElementTypes.SLIDE] = new Slide({
+  type: ElementTypes.SLIDE,
+  id:'',
+  parent:'',
+  props: {
+    props: { style: {height:'1000',width:'700'}, transition: ["slide"] },
+  },
+  children: []
+});
+elements[ElementTypes.TEXT] =new Text( {
   type: ElementTypes.TEXT,
   defaultWidth: 52,
   defaultHeight: 36,
@@ -24,8 +38,8 @@ elements[ElementTypes.TEXT] = {
     }
   },
   children: null
-};
-elements[ElementTypes.IMAGE] = {
+});
+elements[ElementTypes.IMAGE] =new Image( {
   type: ElementTypes.IMAGE,
   props: {
     src: `http://jxdinfo.com//r/cms/www/default/images/hz9.jpg`,
@@ -36,9 +50,9 @@ elements[ElementTypes.IMAGE] = {
     }
   },
   children: []
-};
+});
 
-elements[ElementTypes.BOX] = {
+elements[ElementTypes.BOX] = new Element({
   type: ElementTypes.BOX,
   resizeVertical: true,
   props: {
@@ -56,8 +70,8 @@ elements[ElementTypes.BOX] = {
     }
   },
   children: []
-};
-elements[ElementTypes.LAYOUT] = {
+});
+elements[ElementTypes.LAYOUT] = new Element({
   type: ElementTypes.LAYOUT,
   resizeVertical: true,
   props: {
@@ -73,9 +87,9 @@ elements[ElementTypes.LAYOUT] = {
     }
   },
   children: []
-};
+});
 
-elements[ElementTypes.LIST] = {
+elements[ElementTypes.LIST] = new Element({
   type: ElementTypes.LIST,
   props: {
     style: {
@@ -103,9 +117,9 @@ elements[ElementTypes.LIST] = {
     ]
   },
   children: []
-};
+});
 
-elements[ElementTypes.TABLE] = {
+elements[ElementTypes.TABLE] = new Element( {
   type: ElementTypes.TABLE,
   resizeVertical: true,
   props: {
@@ -158,10 +172,10 @@ elements[ElementTypes.TABLE] = {
     }]
   },
   children: []
-};
+});
 
 
-elements[ElementTypes.FORM] = {
+elements[ElementTypes.FORM] = new From({
   type: ElementTypes.FORM,
   props: {
     layout:"horizontal",
@@ -173,10 +187,10 @@ elements[ElementTypes.FORM] = {
     },
   },
   children: []
-};
+});
 
 
-elements[ElementTypes.FORMIITEM] = {
+elements[ElementTypes.FORMIITEM] =new Element( {
   type: ElementTypes.FORMIITEM,
   props: {
     label:'label',
@@ -186,6 +200,25 @@ elements[ElementTypes.FORMIITEM] = {
     },
   },
   children: []
-};
-
+});
+elements[ElementTypes.COXCOMB] =new Element( {
+  type: ElementTypes.COXCOMB,
+  props: {
+    data:[
+      {value:235, name:'视频广告'},
+      {value:274, name:'联盟广告'},
+      {value:310, name:'邮件营销'},
+      {value:335, name:'直接访问'},
+      {value:400, name:'搜索引擎'}
+     ],
+    name:'访问来源',
+    type:'pie',
+    radius:'55%',
+    style: {
+      width: 400,
+      height: 400,
+    },
+  },
+  children: []
+});
 export default elements;

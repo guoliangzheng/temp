@@ -3,6 +3,7 @@ export const DraggableTypes = {
 };
 
 export const ElementTypes = {
+  SLIDE:'Slide',
   HEADING: "Heading",
   TEXT: "Text",
   IMAGE: "Image",
@@ -13,7 +14,8 @@ export const ElementTypes = {
   LAYOUT:'Layout',
   LINK: "Link",
   TABLE: "Table",
-  IFRAME: "IFrame"
+  IFRAME: "IFrame",
+  COXCOMB:"Coxcomb",
 };
 export const IconTypes = {
   ...ElementTypes

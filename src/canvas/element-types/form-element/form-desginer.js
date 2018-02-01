@@ -52,7 +52,6 @@ export default class FormDesginer extends Component {
       key: 'type',
       dataIndex: 'type',
     }];
-    console.log(this.state.list);
     return (
       <Modal onCancel={this.props.onClose} onOk={this.props.onClose} style={{width:'700',height:'700'}} visible={true} title={"表单字段维护"}>         
           <Form layout="inline" >
