@@ -8,7 +8,6 @@ import { Input } from 'antd';
 import CanvasElement, { CanvasElementPropTypes } from "../../canvas-element";
 
 import styles from "./index.css";
-import ContentEditable from "./content-editable";
 import PropTypes from 'prop-types'
 @observer
 export default class TextElement extends Component {
@@ -17,8 +16,7 @@ export default class TextElement extends Component {
     rect: PropTypes.object,
     component: PropTypes.shape({
       props: PropTypes.object,
-      children: PropTypes.node,
-      defaultText: PropTypes.array
+      children: PropTypes.node
     })
   }
 
@@ -40,18 +38,7 @@ export default class TextElement extends Component {
   render() {
     const componentProps = this.props.component.props;
 
-    let tagName = "div";
-    if (componentProps.listType === "ordered") {
-      tagName = "ol";
-    } else if (componentProps.listType === "unordered") {
-      tagName = "ul";
-    }
-
-    const classes = classNames({
-      [styles.content]: true,
-      [styles.quote]: componentProps.isQuote
-    });
-
+  
     let width = componentProps.style.width ? componentProps.style.width : "auto";
     width = this.props.rect ? this.props.rect.width : width;
     let height = this.props.rect ? this.props.rect.height : componentProps.style.height;
@@ -65,19 +52,9 @@ export default class TextElement extends Component {
       >
             <CanvasElement
               {...pick(this.props, Object.keys(CanvasElementPropTypes))}
-              resizeHorizontal={true}
-              resizeVertical={true}
               getSize={this.getSize}
-            > 
-          {/* <Input placeholder="Input 1" />
-          <Input ref={el => { this.inputElement = ReactDOM.findDOMNode(el); }}
-          
-          placeholder="Input 2" defaultValue="Value on load" />
-           */}      
-          <Input  style={{width:width,height:height,}} />
-
-             {/*      <input  ref={el => { this.inputElement = ReactDOM.findDOMNode(el); }}
-       ></input>  */}
+            >      
+               <Input  style={{width:width,height:height,}} />
             </CanvasElement>
       </div>
     );
