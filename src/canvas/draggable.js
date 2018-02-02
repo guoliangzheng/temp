@@ -80,6 +80,12 @@ class Draggable extends Component {
       const targetSize = { ...this.sizeAtStart };
       targetSize.left += (coords.x - this.startMousePosition.x) / this.props.scale;
       targetSize.top += (coords.y - this.startMousePosition.y) / this.props.scale;
+      if(targetSize.left<=0){
+        targetSize.left=0
+      }
+      if(targetSize.top<=0){
+        targetSize.top=0
+      }
       this.moveTo(e, targetSize);
     }
   }

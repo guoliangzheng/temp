@@ -176,7 +176,6 @@ class Slide extends Component {
   }
 
   handleKeyDown = (e) => {
-    // bail if something else is focused
     if (e.target !== document.body) return;
 
     const currentElement = this.context.store.currentElement;
@@ -202,6 +201,7 @@ class Slide extends Component {
       if (results.vertical && results.vertical.distance === 0) {
         lines.push(results.vertical.line);
       }
+   
       this.setState({ intermediarySize: size, activeSnapLines: lines });
     }
   }
