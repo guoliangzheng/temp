@@ -98,6 +98,9 @@ export default class Store{
     const slideOffset = findDOMNode(this.domRefs.get(id)).getBoundingClientRect(); 
     let left = e.clientX - slideOffset.left;
     let top = e.clientY - slideOffset.top;
+
+    if(left<=0) left=0;
+    if(top<=0) top = 0;
     return {left,top}
   }
   setDomRef(id,obj){

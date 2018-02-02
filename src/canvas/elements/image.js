@@ -9,6 +9,7 @@ export default class Image extends Element{
         const props = {};
         const temp = propsArr[0];
         const {style,transition,isQuote,listType,size,src} = temp;
+        alert(src);
         if(src){
             props.src = src[0];
         }
