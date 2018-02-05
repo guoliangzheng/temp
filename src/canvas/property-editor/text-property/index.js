@@ -5,6 +5,7 @@ import styles from "../index.css";
 import { map, omit, find } from "lodash";
 import { DatePicker } from 'antd';
 import {Width,Height} from '../base-property';
+import {OnFoucs} from '../event-property';
 
 
 export default class TextProperty extends Component {
@@ -21,7 +22,7 @@ export default class TextProperty extends Component {
   render() {    
     return (
       <div>
-      
+        <OnFoucs/>
         <Width/>
         <Height/>
       </div>

@@ -37,8 +37,10 @@ export default class TextElement extends Component {
  
   render() {
     const componentProps = this.props.component.props;
-
-  
+    const event = componentProps.event;
+    const {actions} = this.context.store;
+    const {onfocus} =event;
+    
     let width = componentProps.style.width ? componentProps.style.width : "auto";
     width = this.props.rect ? this.props.rect.width : width;
     let height = this.props.rect ? this.props.rect.height : componentProps.style.height;
@@ -54,7 +56,7 @@ export default class TextElement extends Component {
               {...pick(this.props, Object.keys(CanvasElementPropTypes))}
               getSize={this.getSize}
             >      
-               <Input  style={{width:width,height:height,}} />
+               <Input onFocus={()=>{if(actions.has(onfocus)){actions.get(onfocus).action()}}} style={{width:width,height:height,}} />
             </CanvasElement>
       </div>
     );

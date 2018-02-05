@@ -35,7 +35,8 @@ elements[ElementTypes.TEXT] =new Text( {
       left:70,
       top:0,
       
-    }
+    },
+    event:{}
   },
   children: null
 });
@@ -49,7 +50,9 @@ elements[ElementTypes.IMAGE] =new Image( {
       opacity: 0.2
     }
   },
-  children: []
+  event:{},
+  children: [],
+  
 });
 
 elements[ElementTypes.BOX] = new Element({

@@ -5,6 +5,7 @@ import TableDataSource from './tableDataSource'
 import ListDataSource from './listDataSource'
 import Layout from './layout'
 import ComCobxData from './comCobxData'
+import Actions from './actions'
 export {
             Width,
             Height,
@@ -12,5 +13,6 @@ export {
             TableDataSource,
             ListDataSource,
             Layout,
-            ComCobxData
+            ComCobxData,
+            Actions
         }

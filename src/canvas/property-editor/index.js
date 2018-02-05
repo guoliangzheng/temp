@@ -9,6 +9,8 @@ import ImageProperty from './image-property'
 import TableProperty from './table-property'
 import ListProperty from './list-property'
 import FormProperty  from './form-property'
+import SlideProperty  from './silde-property'
+
 import { ElementTypes, BLACKLIST_CURRENT_ELEMENT_DESELECT } from "../../constants";
 import ComCobxProperty from "./coxcomb-property";
 const propertyEditorMappering = new Map();
@@ -17,7 +19,7 @@ propertyEditorMappering.set(ElementTypes.IMAGE,ImageProperty)
 propertyEditorMappering.set(ElementTypes.TABLE,TableProperty)
 propertyEditorMappering.set(ElementTypes.LIST,ListProperty)
 propertyEditorMappering.set(ElementTypes.FORM,FormProperty)
-propertyEditorMappering.set(ElementTypes.FORM,FormProperty)
+propertyEditorMappering.set(ElementTypes.SLIDE,SlideProperty)
 propertyEditorMappering.set(ElementTypes.COXCOMB,ComCobxProperty)
 
 @observer

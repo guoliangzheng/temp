@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 export default class Provider extends React.Component {
   constructor(props, context) {
     super(props, context);
-
     this.store = props.store;
   }
 

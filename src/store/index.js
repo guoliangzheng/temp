@@ -14,7 +14,6 @@ import Element from "../canvas/elements/element";
 export default class Store{
     memroyXml = null;
 
-    @observable rootID = null;
     @observable width = 0;
     @observable height = 0;
     @observable left = 0;
@@ -30,9 +29,11 @@ export default class Store{
 
     @observable currentElement = null;
     @observable mouseOverElement = null;
-
+    @observable actions = null; //动作
+    @observable rootID = null;  //组件树根节点ID
+    @observable dataSet = null; //数据集
     @observable side = false;
-    @observable components = null;
+    @observable components = null;//组件树
     @observable poprtyeChange =0;
     @observable dropTagElementId = null;
     @observable previeComponents = null;
@@ -57,6 +58,8 @@ export default class Store{
           children: []
          })
          this.components = new Map();
+         this.actions = new Map();
+         this.dataSet = {};
          this.components.set(id,this.slide);
         }
     }
@@ -130,8 +133,8 @@ export default class Store{
       const currentElement = this.components.get(this.currentElement);
       const newProps = merge(currentElement.props, props);
       currentElement.props =newProps;
-      this.poprtyeChange = this.poprtyeChange^1;
   }
+
 
   updateElementParent(props){
 
@@ -161,6 +164,10 @@ export default class Store{
   @computed get getpoprtyeChange(){
     return this.poprtyeChange;
   }
+  addAction(temp){
+    const {name} = temp;
+    this.actions.set(name,temp);
+  }
 
   addFromItem(formID,item){
     const form = this.components.get(formID);
@@ -168,12 +175,6 @@ export default class Store{
     let formItem = elementMap[ElementTypes.FORMIITEM]
     formItem.props.label = label;
     const formItemId = uuid();
- /*    formItem= {
-      ...formItem,
-      parent:formID,
-      id: formItemId,
-      children:[]
-    }; */
     formItem.parent = formID;
     formItem.id  = formItemId;
 
@@ -181,12 +182,7 @@ export default class Store{
     const elementid = uuid();
     element.parent = formItemId;
     element.id = elementid;
-    /* element= {
-      ...element,
-      parent:formItemId,
-      id: elementid,
-      children:[]
-    }; */
+
     form.children.push(formItemId);
     formItem.children.push(elementid);
     this.components.set(formItemId,formItem);
