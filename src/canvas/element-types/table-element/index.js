@@ -3,7 +3,7 @@ import { pick } from "lodash";
 import CanvasElement, { CanvasElementPropTypes } from "../../canvas-element";
 import PropTypes from 'prop-types';
 import { observer } from "mobx-react";
-import { Table} from 'antd';
+import { Table} from 'element-react';
 
 @observer
 export default class TableElement extends Component {

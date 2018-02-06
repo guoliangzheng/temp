@@ -7,6 +7,7 @@ import styles from './index.css'
 import { Button,Form,Input,Select,Table} from 'antd';
 import { observer } from "mobx-react";
 import JsParse from './jsParse';
+const { TextArea } = Input;
 
 const FormItem = Form.Item;
 @observer
@@ -41,9 +42,12 @@ class ActionFrom extends Component {
           temp.name = name;
           temp.source = action;
           temp.describe = describe;
-          temp.action = new Function("actions","dataSet",JsParse(action).join(''));
+          console.log("function",JsParse(action).join(''));
+          temp.action = new Function(JsParse(action).join(''));
           this.context.store.addAction(temp)
-          }catch(e){alert('函数定义不正确')}
+          }catch(e){
+            console.error("method",e);
+            alert('函数定义不正确')}
         }
       });
   }
@@ -68,7 +72,6 @@ class ActionFrom extends Component {
       dataIndex: 'describe',
       key: 'describe',
     }];
-  
     return (
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>动作定义</label>
@@ -97,7 +100,7 @@ class ActionFrom extends Component {
                 {getFieldDecorator('action', {
                   rules: [{ required: false }],
                 })(
-                  <Input   />
+                  <TextArea rows={4}  columns='60' />
                 )}
               </FormItem>  
 

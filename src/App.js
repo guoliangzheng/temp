@@ -10,6 +10,7 @@ import {LeftSide,RightSide} from './side'
 import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import styles from "./App.css";
+import 'element-theme-default';
 class App extends Component {
   render() {
     let store = new Store();

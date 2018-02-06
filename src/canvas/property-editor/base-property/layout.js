@@ -31,8 +31,7 @@ export default class Layout extends Component {
                 <div>
                 <Select defaultValue="outline" style={{ width: 120 }} onChange={this.handleChange}>
                         <Option value="inline">inline</Option>
-                        <Option value="outline">outline</Option>
-                       
+                        <Option value="outline">outline</Option>    
                 </Select>
                 </div>
             </div>

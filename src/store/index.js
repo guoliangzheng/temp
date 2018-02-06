@@ -10,6 +10,7 @@ import HttpService from "../httpservice";
 import { findDOMNode } from "react-dom";
 import Slide from "../canvas/elements/slide"
 import Element from "../canvas/elements/element";
+import fetch from 'node-fetch';
 
 export default class Store{
     memroyXml = null;
@@ -44,7 +45,7 @@ export default class Store{
     }
     constructor(slide) {
       window.memroy = this;
-
+      window.fetch = fetch;
       if(slide){
         this.slide = slide;
       }else{
@@ -62,6 +63,9 @@ export default class Store{
          this.dataSet = new Map();
          this.components.set(id,this.slide);
         }
+        window.dataSet = this.dataSet;
+        window.actions = this.actions;
+
     }
   setCanvasSize({ width, height, left, top, scale }) {
     transaction(() => {

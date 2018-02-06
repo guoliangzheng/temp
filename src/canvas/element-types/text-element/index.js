@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import { map, omit, pick } from "lodash";
 import { observer } from "mobx-react";
 import classNames from "classnames";
-import { Input } from 'antd';
+import { Input } from 'element-react';
+import _ from "lodash";
 
 import CanvasElement, { CanvasElementPropTypes } from "../../canvas-element";
 
@@ -42,6 +43,11 @@ export default class TextElement extends Component {
     let width = componentProps.style.width ? componentProps.style.width : "auto";
     width = this.props.rect ? this.props.rect.width : width;
     let height = this.props.rect ? this.props.rect.height : componentProps.style.height;
+  /*   let onfocusAction =actions.has(onfocus)?_.cloneDeep(actions.get(onfocus).action):null; */
+
+   /*  for(let  key in componentProps){
+        this.props[key] = componentProps;
+    } */
     return (
       <div 
       key={this.props.index}
@@ -52,9 +58,10 @@ export default class TextElement extends Component {
       >
             <CanvasElement
               {...pick(this.props, Object.keys(CanvasElementPropTypes))}
+              resizeVertical={false}
               getSize={this.getSize}
             >      
-               <Input onFocus={()=>{try{ if(actions.has(onfocus)){actions.get(onfocus).action(actions,dataSet)}}catch(e){} }} value={bingdingValue} style={{width:width,height:height,}} />
+              <Input  {...componentProps}  style={{width,height}} />
             </CanvasElement>
       </div>
     );
