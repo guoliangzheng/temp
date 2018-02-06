@@ -1,7 +1,6 @@
 import React from "react";
 
-import plotlyPlaceholder from "../../assets/images/plotly-placeholder.png";
-import imagePlaceholder from "../../assets/icons/image.svg";
+
 import { ElementTypes } from "../../constants";
 import Text from './text';
 import Slide from './slide'
