@@ -33,14 +33,12 @@ export default class TextElement extends Component {
   constructor(props, context) {
     super(props, context);
   }
-
- 
   render() {
     const componentProps = this.props.component.props;
-    const event = componentProps.event;
-    const {actions} = this.context.store;
+    const {event,binding} = componentProps;
+    const {actions,dataSet} = this.context.store;
     const {onfocus} =event;
-    
+    const bingdingValue =dataSet.has(binding)?dataSet.get(binding).data:'';
     let width = componentProps.style.width ? componentProps.style.width : "auto";
     width = this.props.rect ? this.props.rect.width : width;
     let height = this.props.rect ? this.props.rect.height : componentProps.style.height;
@@ -56,7 +54,7 @@ export default class TextElement extends Component {
               {...pick(this.props, Object.keys(CanvasElementPropTypes))}
               getSize={this.getSize}
             >      
-               <Input onFocus={()=>{if(actions.has(onfocus)){actions.get(onfocus).action()}}} style={{width:width,height:height,}} />
+               <Input onFocus={()=>{try{ if(actions.has(onfocus)){actions.get(onfocus).action(actions,dataSet)}}catch(e){} }} value={bingdingValue} style={{width:width,height:height,}} />
             </CanvasElement>
       </div>
     );

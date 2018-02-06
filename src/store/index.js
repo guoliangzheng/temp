@@ -59,7 +59,7 @@ export default class Store{
          })
          this.components = new Map();
          this.actions = new Map();
-         this.dataSet = {};
+         this.dataSet = new Map();
          this.components.set(id,this.slide);
         }
     }
@@ -130,10 +130,12 @@ export default class Store{
   }
   updateElementProps(props) {
       if(this.currentElement==null) return;
-      const currentElement = this.components.get(this.currentElement);
-      const newProps = merge(currentElement.props, props);
-      currentElement.props =newProps;
-  }
+      transaction(() => {
+        const currentElement = this.components.get(this.currentElement);
+        const newProps = merge(currentElement.props, props);
+        currentElement.props =newProps;
+      })
+    }
 
 
   updateElementParent(props){
@@ -164,11 +166,14 @@ export default class Store{
   @computed get getpoprtyeChange(){
     return this.poprtyeChange;
   }
-  addAction(temp){
-    const {name} = temp;
-    this.actions.set(name,temp);
+  addAction(action){
+    const {name} = action;
+    this.actions.set(name,action);
   }
-
+  addDataSet(dataSet){
+    const {name} = dataSet;
+    this.dataSet.set(name,dataSet);
+  }
   addFromItem(formID,item){
     const form = this.components.get(formID);
     const {label,type} = item;
@@ -208,8 +213,11 @@ export default class Store{
   serialize(){
     this.xml = new Array();
     this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>'); 
-    this.toxml(this.rootID); 
-    console.log("xml",this.xml.join(""));
+    this.xml.push("<root>")
+    this.domToXml(this.rootID); 
+    this.actionToxml();
+    this.dataSetToXml();
+    this.xml.push("</root>")
     this.memroyXml = this.xml.join("");
     return this.xml.join("");
   }
@@ -224,6 +232,7 @@ export default class Store{
       this.components = this.tempCompents; */
     })
   }
+
 
   deserializeRoot(xmlNode){
     this.tempCompents = new Map();
@@ -263,38 +272,20 @@ export default class Store{
   load(){
     const me = this;
     me.analysis(this.memroyXml); 
-    /* HttpService.query({
-        url:'test.xml',
-        success:res=>{
-          me.analysis(res); 
-        }
-
-    })
- */
-
   }
   save(){
-      this.xml = new Array();
-      this.xml.push('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>');
-      this.toxml(this.rootID);
+      let xml = this.serialize()
       HttpService.save({
         url: 'http://127.0.0.1:8080/save',
         data: {
-            xml:this.xml.join("")
+            xml:xml
         },
         success: res => {
-          /*   console.log(res);
-            if (res.retCode == 0) {
-                this.setState({
-                    liked: true
-                })
-            } else {
-                R_UiService.Toaster(res.retMsg)
-            } */
+         
         }
     });
   }
-  toxml(elementid){
+  domToXml(elementid){
     const obj = this.components.get(elementid);
     if(!obj) return ;
     const {id,children,type} = obj;
@@ -303,10 +294,37 @@ export default class Store{
     this.xml.push('<children>')
     if(children!=null){
       for(let i =0,length = children.length;i<length;i++){
-        this.toxml(children[i]);
+        this.domToXml(children[i]);
       }
     }
     this.xml.push('</children>')
     this.xml.push(obj.serializeEnd(type));
+  }
+  dataSetToXml(){
+    this.xml.push("<DataSet>")
+
+    this.dataSet.forEach(element => {
+      const{name,describe,type,data}=element;
+      this.xml.push("<child>")
+      this.xml.push("<name>"+name+"</name>");
+      this.xml.push("<describe>"+describe+"</describe>");
+      this.xml.push("<type>"+type+"</type>");
+      this.xml.push("<data><![CDATA["+JSON.stringify(data)+"]]></data>");
+      this.xml.push("</child>")
+    });
+    this.xml.push("</DataSet>")
   } 
+  actionToxml(){
+    this.xml.push("<Actions>")
+    this.actions.forEach(element => {
+      const{name,describe,source,action}=element;
+      this.xml.push("<child>")
+      this.xml.push("<name>"+name+"</name>");
+      this.xml.push("<describe>"+describe+"</describe>");
+      this.xml.push("<source><![CDATA["+source+"]]></source>");
+      this.xml.push("<action><![CDATA["+action.toString()+"]]></action>");
+      this.xml.push("</child>")
+    });
+    this.xml.push("</Actions>")
+  }
 }

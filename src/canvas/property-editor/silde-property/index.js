@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types'
 
 
-import {Actions} from '../base-property';
+import {Actions,DataSet} from '../base-property';
 
 export default class SlideProperty extends Component {
   static contextTypes = {
@@ -19,6 +19,7 @@ export default class SlideProperty extends Component {
     return (
       <div>
        <Actions/>
+       <DataSet/>
       </div>
     );
   }

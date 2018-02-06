@@ -7,6 +7,7 @@ import styles from './index.css'
 import { Button,Form,Input,Select,Table} from 'antd';
 import { observer } from "mobx-react";
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 @observer
 class DataSetFrom extends Component {
@@ -35,13 +36,28 @@ class DataSetFrom extends Component {
     this.props.form.validateFields((err, values) => {
         if (!err) {
           try{
-          const {name,action,describe}= values;
+          const {name,type,describe,data}= values;
           const temp = {};
           temp.name = name;
-          temp.source = action;
+          temp.type = type;
+          if(type=="object"){
+            temp.data = new Object(data);
+          }
+          if(type=="array"){
+            temp.data = new Array(data);
+          }
+          if(type=="boolean"){
+            temp.data = new Boolean(data);
+          }
+          if(type=="string"){
+            temp.data = new String(data);
+          }
+          if(type=="number"){
+            temp.data = new Number(data);
+          }
           temp.describe = describe;
           this.context.store.addDataSet(temp)
-          }catch(e){alert('函数定义不正确')}
+          }catch(e){alert('数据集定义不正确')}
         }
       });
   }
@@ -50,7 +66,6 @@ class DataSetFrom extends Component {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
     const tableData = [];
     dataSet.forEach(element=>{ 
-
       const {name,describe} = element;
       tableData.push({
         name,
@@ -69,11 +84,11 @@ class DataSetFrom extends Component {
   
     return (
             <div className={styles.propertyGroup}>
-                <label className={styles.controlLable}>动作定义</label>
-            
+                <label className={styles.controlLable}>数据集定义</label>
+                <br/>
                 <Table dataSource={tableData} columns={columns} />
                 <Form layout="inline" onSubmit={this.handleAdd}>
-                <FormItem label="动作名称"
+                <FormItem label="数据集"
               >
                 {getFieldDecorator('name', {
                   rules: [{ required: false }],
@@ -89,15 +104,29 @@ class DataSetFrom extends Component {
                   <Input  />
                 )}
               </FormItem>
-              <FormItem label="动作实现"
+              <FormItem label="数据集类型"
               >
-                {getFieldDecorator('action', {
+                {getFieldDecorator('type', {
+                  rules: [{ required: false }],
+                })(
+                  <Select defaultValue="object"  >
+                  <Option value="object">object</Option>
+                  <Option value="array">array</Option>
+                  <Option value="boolean">boolean</Option>
+                  <Option value="string">string</Option>
+                  <Option value="number">number</Option>
+                </Select>
+                )}
+              </FormItem>  
+
+              <FormItem label="数据"
+              >
+                {getFieldDecorator('data', {
                   rules: [{ required: false }],
                 })(
                   <Input   />
                 )}
               </FormItem>  
-
               <FormItem>
                 <Button
                     type="primary"
@@ -111,7 +140,6 @@ class DataSetFrom extends Component {
         )
     }
 }
-
 const DataSet = Form.create()(DataSetFrom);
 export default DataSet
 

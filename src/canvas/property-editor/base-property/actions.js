@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import styles from './index.css'
 import { Button,Form,Input,Select,Table} from 'antd';
 import { observer } from "mobx-react";
-const FormItem = Form.Item;
+import JsParse from './jsParse';
 
+const FormItem = Form.Item;
 @observer
 class ActionFrom extends Component {
       
@@ -40,7 +41,7 @@ class ActionFrom extends Component {
           temp.name = name;
           temp.source = action;
           temp.describe = describe;
-          temp.action = new Function(action);
+          temp.action = new Function("actions","dataSet",JsParse(action).join(''));
           this.context.store.addAction(temp)
           }catch(e){alert('函数定义不正确')}
         }

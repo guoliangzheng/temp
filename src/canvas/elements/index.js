@@ -36,6 +36,7 @@ elements[ElementTypes.TEXT] =new Text( {
       top:0,
       
     },
+    binding:'',
     event:{}
   },
   children: null

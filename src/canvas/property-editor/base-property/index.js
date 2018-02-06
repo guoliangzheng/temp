@@ -6,6 +6,8 @@ import ListDataSource from './listDataSource'
 import Layout from './layout'
 import ComCobxData from './comCobxData'
 import Actions from './actions'
+import DataSet from './dataSet'
+import Binding from './binding'
 export {
             Width,
             Height,
@@ -14,5 +16,7 @@ export {
             ListDataSource,
             Layout,
             ComCobxData,
-            Actions
+            Actions,
+            DataSet,
+            Binding,
         }

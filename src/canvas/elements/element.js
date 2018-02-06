@@ -16,7 +16,7 @@ export default class Element extends Object{
         for(var key in props ){
           xml.push('<'+key+'><![CDATA['+JSON.stringify( props[key] )+']]></'+key+'>')
         }     
-        xml.push('</props>')      
+        xml.push('</props>')     
         return xml;
      }
      serializeEnd=(type)=>{
