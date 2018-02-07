@@ -144,6 +144,18 @@ export default class Store{
         currentElement.props =newProps;
       })
     }
+    //更新table  column
+    updateTableCloumns(props,index){
+      const currentElement = this.components.get(this.currentElement);
+      const columns = currentElement.props.columns;
+      const column = columns[index];
+      const newColumn =  merge(column, props);
+      transaction(()=>{
+        columns[index] = newColumn;
+      })
+
+    }
+
   //更新组件事件
   updateElementEvent(event) {
     if(this.currentElement==null) return;

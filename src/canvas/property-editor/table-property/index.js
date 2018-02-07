@@ -11,7 +11,7 @@ import SelectTemplete from '../property-templete/select-templete'
 import EInputTemplete from '../event-templete/input-templete'
 import BooleanTemplete from '../property-templete/boolean-templete'
 
-import ColumnEditor from './column-property/editor'
+import ColumnEditor from './column-property/index'
 
 export default class TableProperty extends Component {
   static contextTypes = {
