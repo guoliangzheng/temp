@@ -23,10 +23,7 @@ elements[ElementTypes.TEXT] =new Text( {
   defaultWidth: 52,
   defaultHeight: 36,
   defaultText: ["hello is me"],
-  props: {
-    isQuote: false,
-    size: 4,
-    listType: null,
+  props: {//属性定义
     style: {
       wordBreak: "break-word",
       width: 200,
@@ -35,9 +32,28 @@ elements[ElementTypes.TEXT] =new Text( {
       top:0,
       
     },
+    type:'text',
+    maxLength:10000,
+    minLength:0,
+    placeholder:'',
+    disabled:false,
+    size:'',
+    rows:'',
+    readOnly:false,
+    resize:false,
     binding:'',
-    event:{}
+    prefix:'',
+    suffix:'',
+    prepend:'',
+    append:'',
+   
+  }, 
+  event:{//事件定义  
+    blur:'',
+    focus:'',
+    change:'',
   },
+  binding:"",//绑定的数据集
   children: null
 });
 elements[ElementTypes.IMAGE] =new Image( {
@@ -50,9 +66,10 @@ elements[ElementTypes.IMAGE] =new Image( {
       opacity: 0.2
     }
   },
-  event:{},
-  children: [],
+  event:{
   
+  },
+  children: [],
 });
 
 elements[ElementTypes.BOX] = new Element({
@@ -124,7 +141,6 @@ elements[ElementTypes.LIST] = new Element({
 
 elements[ElementTypes.TABLE] = new Element( {
   type: ElementTypes.TABLE,
-  resizeVertical: true,
   props: {
     style: {
       width: 400,
@@ -132,51 +148,29 @@ elements[ElementTypes.TABLE] = new Element( {
       left: 0,
       top: 0
     },
-    columns : [{
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a href="#">{text}</a>,
-    }, {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    }, {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    }, {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-          <a href="#">Action 一 {record.name}</a>
-          <a href="#">Delete</a>
-          <a href="#" className="ant-dropdown-link">
-          </a>
-        </span>
-      ),
-    }],
-    data : [{
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    }]
+    columns:[
+      {
+        label: "日期",
+        prop: "date",
+        width: 180
+      }   
+    ],
+    stripe:true,
+    border:true,
+    fit:true,
+    showHeader:true,
+    highlightCurrentRow:true,
+    emptyText:'',
+    defaultExpandAll:true,
+    showSummary:false,
+    sumText:'合计'
   },
+  event:[
+    
+  ],
+  binding:[],
   children: []
 });
-
 
 elements[ElementTypes.FORM] = new From({
   type: ElementTypes.FORM,

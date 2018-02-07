@@ -40,19 +40,28 @@ class DataSetFrom extends Component {
           const temp = {};
           temp.name = name;
           temp.type = type;
+          temp.initData ={};
+          temp.data = {};
           if(type=="object"){
+            temp.initData = new Object(data);
             temp.data = new Object(data);
           }
           if(type=="array"){
+            temp.initData = new Array(data);
             temp.data = new Array(data);
           }
           if(type=="boolean"){
+            temp.initData = new Boolean(data);
+
             temp.data = new Boolean(data);
           }
           if(type=="string"){
+            temp.initData = new String(data);
+
             temp.data = new String(data);
           }
           if(type=="number"){
+            temp.initData = new Number(data);
             temp.data = new Number(data);
           }
           temp.describe = describe;

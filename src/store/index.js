@@ -84,7 +84,7 @@ export default class Store{
       this.isDraggingNewElement = isDraggingNewElement;
     });
   }
-
+  //放置元素时的方法
   dropElement(elementType,dropTagID, extraProps) {
     let selectItemid = dropTagID || this.rootID;
     const parent = this.components.get(selectItemid);
@@ -95,8 +95,11 @@ export default class Store{
     element.props = mergedProps;
     element.id = id;
     element.parent = selectItemid;
-    parent.children.push(id);
-    this.components.set(id,element);
+    debugger;
+    transaction(() => {
+      parent.children.push(id);
+      this.components.set(id,element);
+    })
     
   }
   getDropPosition(dropTagID){
@@ -132,6 +135,7 @@ export default class Store{
   setMouserOverElement(id){
     this.mouseOverElement = id;
   }
+  //更新组件props
   updateElementProps(props) {
       if(this.currentElement==null) return;
       transaction(() => {
@@ -140,8 +144,23 @@ export default class Store{
         currentElement.props =newProps;
       })
     }
-
-
+  //更新组件事件
+  updateElementEvent(event) {
+    if(this.currentElement==null) return;
+    transaction(() => {
+      const currentElement = this.components.get(this.currentElement);
+      const newEvent = merge(currentElement.event, event);
+      currentElement.event =newEvent;
+    })
+  }
+   //更新组件绑定
+   updateElementBinding(binding) {
+    if(this.currentElement==null) return;
+    transaction(() => {
+      const currentElement = this.components.get(this.currentElement);
+      currentElement.binding =binding;
+    })
+  }
   updateElementParent(props){
 
 
@@ -308,12 +327,12 @@ export default class Store{
     this.xml.push("<DataSet>")
 
     this.dataSet.forEach(element => {
-      const{name,describe,type,data}=element;
+      const{name,describe,type,initData}=element;
       this.xml.push("<child>")
       this.xml.push("<name>"+name+"</name>");
       this.xml.push("<describe>"+describe+"</describe>");
       this.xml.push("<type>"+type+"</type>");
-      this.xml.push("<data><![CDATA["+JSON.stringify(data)+"]]></data>");
+      this.xml.push("<initData><![CDATA["+JSON.stringify(initData)+"]]></initData>");
       this.xml.push("</child>")
     });
     this.xml.push("</DataSet>")

@@ -7,7 +7,7 @@ export default class Element extends Object{
       }     
       serializeStart=(compent)=>{
         let xml = new Array();
-        const {id,type,props,children,parent} = compent;
+        const {id,type,props,children,parent,event,binding} = compent;
         xml.push('<'+type+">")
         xml.push('<parent>'+parent+'</parent>')
         xml.push('<type>'+type+'</type>')
@@ -16,7 +16,10 @@ export default class Element extends Object{
         for(var key in props ){
           xml.push('<'+key+'><![CDATA['+JSON.stringify( props[key] )+']]></'+key+'>')
         }     
-        xml.push('</props>')     
+        xml.push('</props>')  
+        xml.push('<event><![CDATA['+JSON.stringify(event )+']]></event>')
+        xml.push('<binding>'+binding+'</binding>')
+
         return xml;
      }
      serializeEnd=(type)=>{
@@ -49,7 +52,6 @@ export default class Element extends Object{
      deserializeChildren=(nodes)=>{
         const children = new Array();
         if(nodes==null || nodes.length==0) return;
-
         for(let key in nodes[0]){
           let nodeArr = nodes[0][key];
   

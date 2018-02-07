@@ -228,6 +228,8 @@ class Slide extends Component {
     const Element = elementFromType.get(childObj.type);
     let top = intermediarySize ? intermediarySize.top : childObj.props.style.top;
     let left= intermediarySize ? intermediarySize.left : childObj.props.style.left
+    let width =childObj.props.style.width;
+    let height = childObj.props.style.height;
     return (
         <Element
           key = {childObj.id}

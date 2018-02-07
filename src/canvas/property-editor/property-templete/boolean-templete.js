@@ -6,7 +6,7 @@ import { Select } from 'antd';
 const Option = Select.Option;
 
 @observer
-export default class SelectTemplete extends Component {
+export default class BooleanTemplete extends Component {
       
   static contextTypes = {
     store:PropTypes.object
@@ -15,7 +15,16 @@ export default class SelectTemplete extends Component {
      super()
   }
   handleChange = (value) => {
-      this.updateStore(value);
+    let result = true;
+
+    if(value=="true"){
+          result =true;
+      }else{
+          result =false
+      }
+      console.log("change",result,typeof(result))
+
+      this.updateStore(result);
   }
   updateStore(updatedValue) {
      const data={};
@@ -25,19 +34,16 @@ export default class SelectTemplete extends Component {
   render(){
     const currentElement = this.context.store.currentComponents;
     const props = currentElement.props;
-    const value = props[this.props.propertyName];
-    const data =this.props.data;
-    const children = [];
-    
-    for (let key in data) {
-        children.push(<Option key= {key}>{data[key]}</Option>);
-    }
+    let value = props[this.props.propertyName];
+    console.log("value",value,typeof(value))
+    value = value+"";
     return (
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>{this.props.propertyLabel}</label>
                 <div >
                     <Select defaultValue={value} style={{ width: 120 }} onChange={this.handleChange}>
-                       {children}
+                    <Option key= {true}>true</Option>
+                    <Option key= {false}>false</Option>
                    </Select>
                 </div>
             </div>

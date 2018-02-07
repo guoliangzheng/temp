@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 import classNames from "classnames";
 import { Input } from 'element-react';
 import _ from "lodash";
+import TilteUtil from '../../util/titleUtil'
 
 import CanvasElement, { CanvasElementPropTypes } from "../../canvas-element";
 
@@ -36,9 +37,8 @@ export default class TextElement extends Component {
   }
   render() {
     const componentProps = this.props.component.props;
-    const {event,binding} = componentProps;
+    const {event,binding} =  this.props.component;
     const {actions,dataSet} = this.context.store;
-    const {onfocus} =event;
     const bingdingValue =dataSet.has(binding)?dataSet.get(binding).data:'';
     let width = componentProps.style.width ? componentProps.style.width : "auto";
     width = this.props.rect ? this.props.rect.width : width;
@@ -48,6 +48,11 @@ export default class TextElement extends Component {
    /*  for(let  key in componentProps){
         this.props[key] = componentProps;
     } */
+    const eventObject = {};
+    for(var key in event){
+        const newKey  ="on"+TilteUtil.titleCase(key);
+        eventObject[newKey]=actions.has(event[key])?actions.get(event[key]).action:null;
+    }
     return (
       <div 
       key={this.props.index}
@@ -61,7 +66,7 @@ export default class TextElement extends Component {
               resizeVertical={false}
               getSize={this.getSize}
             >      
-              <Input  {...componentProps}  style={{width,height}} />
+            <Input  {...componentProps} {...eventObject} value={bingdingValue}  style={{width,height}} />
             </CanvasElement>
       </div>
     );

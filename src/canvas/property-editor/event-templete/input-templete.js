@@ -4,49 +4,46 @@ import styles from './index.css'
 import { Select } from 'antd';
 import { observer } from "mobx-react";
 const Option = Select.Option;
-
 @observer
-export default class Binding extends Component {
+export default class InputTemplete extends Component {
       
   static contextTypes = {
     store:PropTypes.object
   }
   constructor(){
      super()
-     this.propertyName = "binding";
-  }  
+  }
   handleChange = (value) => {
-    try{
-        this.updateStore(value);
-    }catch(e){
-       console.log("e",e)
-    }
+    this.updateStore(value);
   }
   updateStore(updatedValue) {
-        this.context.store.updateElementBinding(updatedValue);
+    const data={};
+    data[this.props.eventName] =updatedValue;    
+    this.context.store.updateElementEvent(data);
+    
   }
   render(){
     const currentElement = this.context.store.currentComponents;
-    const dataSet = this.context.store.dataSet;
+    const event = currentElement.event;
+    const value = event[this.props.eventName];
+    const actions = this.context.store.actions;
     const children = [];
 
-    dataSet.forEach(element => {
+    actions.forEach(element => {
         const {name} = element;
-
         children.push(<Option key= {name}>{name}</Option>);
 
     });
-    const binding = currentElement.binding;
     return (
             <div className={styles.propertyGroup}>
+                <label className={styles.controlLable}>{this.props.eventLabel}</label>
                 <div >
-                    <Select defaultValue={binding} style={{ width: 120 }} onChange={this.handleChange}>
+                    <Select defaultValue={value} style={{ width: 120 }} onChange={this.handleChange}>
                        {children}
                    </Select>
                 </div>
             </div>
         )
     }
-
 }
 
