@@ -165,9 +165,8 @@ elements[ElementTypes.TABLE] = new Element( {
     showSummary:false,
     sumText:'合计'
   },
-  event:[
-    
-  ],
+  event:{ 
+  },
   binding:[],
   children: []
 });

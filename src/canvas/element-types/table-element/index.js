@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { observer } from "mobx-react";
 import { Table} from 'element-react';
 import TilteUtil from '../../util/titleUtil'
-import PotentialError from '../potentialError';
+import PotentialError from '../../potentialError';
 @observer
 export default class TableElement extends Component {
   static propTypes = {

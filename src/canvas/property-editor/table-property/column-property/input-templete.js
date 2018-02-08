@@ -24,7 +24,7 @@ export default class InputTemplete extends Component {
     const currentElement = this.context.store.currentComponents;
     const columns = currentElement.props.columns;
     const index = this.props.index;
-    const value = columns[index][this.props.propertyName];
+    const value = columns[index].hasOwnProperty(this.props.propertyName)? columns[index][this.props.propertyName]:"";
     return (
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>{this.props.propertyLabel}</label>

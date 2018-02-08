@@ -40,20 +40,24 @@ class DataSetFrom extends Component {
           const temp = {};
           temp.name = name;
           temp.type = type;
-          temp.initData ={};
-          temp.data = {};
+          temp.initData =data;
+          temp.data = data;
           if(type=="object"){
             temp.initData = new Object(data);
             temp.data = new Object(data);
           }
           if(type=="array"){
-            temp.initData = new Array(data);
-            temp.data = new Array(data);
+            temp.initData =  JSON.parse(data);
+            temp.data = JSON.parse(data);
           }
           if(type=="boolean"){
-            temp.initData = new Boolean(data);
-
-            temp.data = new Boolean(data);
+            if("true"==data){
+             temp.initData = true;
+            temp.data =true;
+            }else{
+              temp.initData = false;
+              temp.data =false;
+            }
           }
           if(type=="string"){
             temp.initData = new String(data);

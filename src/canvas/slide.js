@@ -174,7 +174,7 @@ class Slide extends Component {
       this.handleDragStop(MODES.MOVE);
     }
   }
-
+ 
   handleKeyDown = (e) => {
     if (e.target !== document.body) return;
 

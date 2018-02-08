@@ -18,17 +18,17 @@ export default class SelectTemplete extends Component {
       this.updateStore(value);
   }
   updateStore(updatedValue) {
-     const data={};
-     data[this.props.propertyName] =updatedValue;     
-    this.context.store.updateElementProps(data);
+    const data={};
+    data[this.props.propertyName] =updatedValue;    
+    this.context.store.updateTableCloumns(data,this.props.index);
   }
   render(){
     const currentElement = this.context.store.currentComponents;
-    const props = currentElement.props;
-    const value = props[this.props.propertyName];
+    const columns = currentElement.props.columns;
+    const index = this.props.index;
+    const value = columns[index].hasOwnProperty(this.props.propertyName)?columns[index][this.props.propertyName]:"";
     const data =this.props.data;
     const children = [];
-    
     for (let key in data) {
         children.push(<Option key= {key}>{data[key]}</Option>);
     }

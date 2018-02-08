@@ -11,6 +11,8 @@ import { findDOMNode } from "react-dom";
 import Slide from "../canvas/elements/slide"
 import Element from "../canvas/elements/element";
 import fetch from 'node-fetch';
+import Col from "antd/lib/grid/col";
+import { lang } from "moment";
 
 export default class Store{
     memroyXml = null;
@@ -31,6 +33,7 @@ export default class Store{
     @observable currentElement = null;
     @observable mouseOverElement = null;
     @observable actions = null; //动作
+    @observable ininAction = null;//初始化话操作
     @observable rootID = null;  //组件树根节点ID
     @observable dataSet = null; //数据集
     @observable side = false;
@@ -56,7 +59,10 @@ export default class Store{
           id: id,
           type:'Slide',
           props: { style: {height:'1000',width:'700'}, transition: ["slide"] },
-          children: []
+          children: [],
+          event:{
+            init:'init'
+          }
          })
          this.components = new Map();
          this.actions = new Map();
@@ -151,11 +157,33 @@ export default class Store{
       const column = columns[index];
       const newColumn =  merge(column, props);
       transaction(()=>{
-        columns[index] = newColumn;
+        var newCloums =[];
+        for(let i =0,length=columns.length;i<length;i++){
+          if(i==index){
+            newCloums[i] = newColumn
+          }else{
+            newCloums[i] = columns[i];
+          }
+        }
+        currentElement.props.columns = newCloums;
       })
 
     }
+    //table新加 column
+  addTableCloumns(){
+    const currentElement = this.components.get(this.currentElement);
+    const columns = currentElement.props.columns;
+    transaction(()=>{
+      var newCloums =[];
+      for(let i =0,length=columns.length;i<length;i++){
+          newCloums[i] = columns[i];
+      }
+      newCloums[columns.length] = {label:'新列'};
+      currentElement.props.columns = newCloums;
+    })
 
+
+  }
   //更新组件事件
   updateElementEvent(event) {
     if(this.currentElement==null) return;
@@ -173,6 +201,26 @@ export default class Store{
       currentElement.binding =binding;
     })
   }
+  /*在当前选中的组件上绑定action */
+  bindingActionOnEvent(action,eventName){
+    const data={};
+    const {name} = action;
+    data[eventName] =name;
+    transaction(() => {
+      const currentElement = this.components.get(this.currentElement);
+      const newEvent = merge(currentElement.event, data);
+      currentElement.event =newEvent;
+      this.actions.set(name,action);
+      
+    })
+    if(name=="init"){
+      try{
+        action.action();
+      }catch(e){}
+    }
+  }
+
+
   updateElementParent(props){
 
 
@@ -352,11 +400,12 @@ export default class Store{
   actionToxml(){
     this.xml.push("<Actions>")
     this.actions.forEach(element => {
-      const{name,describe,source,action}=element;
+      const{name,describe,body,paramters,action}=element;
       this.xml.push("<child>")
       this.xml.push("<name>"+name+"</name>");
       this.xml.push("<describe>"+describe+"</describe>");
-      this.xml.push("<source><![CDATA["+source+"]]></source>");
+      this.xml.push("<body><![CDATA["+body+"]]></body>");
+      this.xml.push("<paramters><![CDATA["+paramters+"]]></paramters>");
       this.xml.push("<action><![CDATA["+action.toString()+"]]></action>");
       this.xml.push("</child>")
     });

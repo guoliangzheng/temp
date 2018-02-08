@@ -41,7 +41,6 @@ export default class TableProperty extends Component {
                </div>
 {/*            <FunctionTemplete propertyName="summeryMethod" propertyLabel="自定义的合计计算方法"/>
  */}
-               <InputTemplete propertyLabel="输入框后置内容"/>
            </div>
   }
   renderEvent=()=>{

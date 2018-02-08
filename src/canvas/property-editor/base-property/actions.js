@@ -75,46 +75,7 @@ class ActionFrom extends Component {
     return (
             <div className={styles.propertyGroup}>
                 <label className={styles.controlLable}>动作定义</label>
-            
                 <Table dataSource={tableData} columns={columns} />
-                <Form layout="inline" onSubmit={this.handleAdd}>
-                <FormItem label="动作名称"
-              >
-                {getFieldDecorator('name', {
-                  rules: [{ required: false }],
-                })(
-                  <Input  />
-                )}
-              </FormItem>
-              
-              <FormItem label="描述"
-              >
-                {getFieldDecorator('describe', {
-                  rules: [{ required: false }],
-                })(
-                  <Input  />
-                )}
-              </FormItem>
-              <FormItem label="动作实现"
-              >
-                {getFieldDecorator('action', {
-                  rules: [{ required: false }],
-                })(
-                  <TextArea rows={4}  columns='60' />
-                )}
-              </FormItem>  
-
-              <FormItem>
-                <Button
-                    type="primary"
-                    onClick={this.handleAdd}
-                >
-                添加
-                </Button>
-                </FormItem>
-                </Form>     
-
-                  
             </div>
         )
     }

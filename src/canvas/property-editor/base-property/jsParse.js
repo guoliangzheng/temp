@@ -44,7 +44,7 @@ function JsParse(body){
         builder.push(src.slice (offset, src.length).join(''));
       }
     }
-    console.log("builder","builder");
+    console.log("builder");
     return builder;
 }
 export default JsParse
