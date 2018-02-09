@@ -19,7 +19,7 @@ export default class ColumnEditor extends Component {
         <InputTemplete index={this.props.index} propertyName="prop" propertyLabel="对应列内容的字段名"  />        
         <InputTemplete index={this.props.index} propertyName="width" propertyLabel="对应列的宽度" />        
         <InputTemplete index={this.props.index} propertyName="minWidth" propertyLabel="对应列的最小宽度"  />        
-        <SelectTemplete index={this.props.index} propertyName="fixed" propertyLabel="列是否固定在左侧或者右侧" data={{"left":"left","index":"index","expand":"expand"}}/>
+        <SelectTemplete index={this.props.index} propertyName="fixed" propertyLabel="列是否固定在左侧或者右侧" data={{"left":"left","right":"right"}}/>
         <SelectTemplete index={this.props.index} propertyName="align" propertyLabel="对齐方式" data={{"left":"left","center":"center","right":"right"}}/>
         <SelectTemplete index={this.props.index} propertyName="headerAlign" propertyLabel="表头对齐方式" data={{"left":"left","center":"center","right":"right"}}/>
       </div>

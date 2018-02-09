@@ -219,6 +219,16 @@ export default class Store{
       }catch(e){}
     }
   }
+    /*在当前选中的组件上绑定action */
+  bindingActionOnProps(action,propName){
+    const {name} = action;
+    transaction(() => {
+      const currentElement = this.components.get(this.currentElement);
+      currentElement.props[propName] =name;
+      this.actions.set(name,action);    
+     }) 
+  }
+ 
 
 
   updateElementParent(props){

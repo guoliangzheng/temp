@@ -34,11 +34,16 @@ export default class TableElement extends Component {
     const {event,binding} =  this.props.component;
     const {actions,dataSet} = this.context.store;
     const bingdingValue =dataSet.has(binding)?dataSet.get(binding).data:[];
-    const eventObject = {};
+    const functionObject = {};
     for(var key in event){
         const newKey  ="on"+TilteUtil.titleCase(key);
-        eventObject[newKey]=actions.has(event[key])?actions.get(event[key]).action:null;
+        functionObject[newKey]=actions.has(event[key])?actions.get(event[key]).action:null;
     }
+    const {summaryMethod} = componentProps;
+    functionObject['summaryMethod']=actions.has(summaryMethod)?actions.get(summaryMethod).action:null;
+
+    debugger;
+
     const columns= componentProps.columns;
     return (
       <div 
@@ -53,7 +58,7 @@ export default class TableElement extends Component {
               {...pick(this.props, Object.keys(CanvasElementPropTypes))}
               getSize={this.getSize}
             >
-            <Table  {...componentProps} {...eventObject} columns={columns} height={height} style={{width}} data={bingdingValue} />
+            <Table  {...componentProps} {...functionObject} columns={columns} height={height} style={{width}} data={bingdingValue} />
             </CanvasElement>
         </PotentialError>
       </div>

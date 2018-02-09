@@ -10,18 +10,38 @@ import InputTemplete from '../property-templete/input-templete'
 import SelectTemplete from '../property-templete/select-templete'
 import EInputTemplete from '../event-templete/input-templete'
 import BooleanTemplete from '../property-templete/boolean-templete'
-
+import FunctionTemplete  from '../property-templete/function-templete'
 import ColumnEditor from './column-property/index'
 
 export default class TableProperty extends Component {
   static contextTypes = {
     store:PropTypes.object
+    
   }
   constructor(props) {
     super(props);
     this.state={
-      isedit:false
-    }  }
+      isedit:false,
+      iseditSummeryMethod:false,
+      } 
+   }
+   openEditor=()=>{
+    this.setState({isedit:true})
+  }
+  closeEditor=()=>{
+    this.setState({isedit:false})
+  }
+  getAction =(action)=>{
+    this.context.store.bindingActionOnProps(action,"summaryMethod");
+  }
+
+  openSummeryMethodEditor=()=>{
+    this.setState({iseditSummeryMethod:true})
+  }
+  closeSummeryMethodEditor=()=>{
+    this.setState({iseditSummeryMethod:false})
+  }
+
   renderProperty=()=>{
     
     return <div>
@@ -37,10 +57,13 @@ export default class TableProperty extends Component {
                <BooleanTemplete propertyName="showSummary" propertyLabel="是否在表尾显示合计行"/>
                <InputTemplete propertyName="sumText" propertyLabel="合计行第一列的文本"/>
                <div>
+                  <label>合计计算方法 <a href="#" onClick={this.openSummeryMethodEditor}>点击</a></label>
+                  {this.state.iseditSummeryMethod?<FunctionTemplete getAction={this.getAction} propertyName="summaryMethod" onClose={this.closeSummeryMethodEditor}/>:""}
+              </div>
+               <div>
                 <label >表格列设置  <a href="#" onClick={this.openEditor}>编辑</a></label>
                </div>
-{/*            <FunctionTemplete propertyName="summeryMethod" propertyLabel="自定义的合计计算方法"/>
- */}
+              
            </div>
   }
   renderEvent=()=>{
@@ -53,12 +76,7 @@ export default class TableProperty extends Component {
   renderBinding=()=>{
      return   <Binding/>
   }
-  openEditor=()=>{
-    this.setState({isedit:true})
-  }
-  closeEditor=()=>{
-    this.setState({isedit:false})
-  }
+ 
  
   render() {    
     return (

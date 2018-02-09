@@ -161,9 +161,10 @@ elements[ElementTypes.TABLE] = new Element( {
     showHeader:true,
     highlightCurrentRow:true,
     emptyText:'',
-    defaultExpandAll:true,
+    defaultExpandAll:false,
     showSummary:false,
-    sumText:'合计'
+    sumText:'合计',
+    summaryMethod:''
   },
   event:{ 
   },
