@@ -23,7 +23,9 @@ export default class CoxCombElement extends Component {
       props: PropTypes.object
     })
   }
-
+  static contextTypes = {
+    store: PropTypes.object
+  };
   getSize = () => ({
     width: this.props.component.props.style.width,
     height: this.props.component.props.style.height,
@@ -59,7 +61,11 @@ componentDidUpdate() {
   myChart.setOption(options)
 }
 setPieOption=()=> {
-  const { data,name,type,radius } = this.props.component.props; 
+  const {binding} =  this.props.component;
+  const { name,type,radius } = this.props.component.props; 
+  const {dataSet} = this.context.store;
+  const data =dataSet.has(binding)?dataSet.get(binding).data:[];
+
   let arr = [];
   data.forEach(element => {
     let obj = {};
@@ -67,7 +73,6 @@ setPieOption=()=> {
     obj.name = element.name;
     arr.push(obj)
   });
-  console.log("arr",arr);
   return {
     series : [
         {
@@ -81,9 +86,12 @@ setPieOption=()=> {
 }
 render() {
     const componentProps = this.props.component.props;
+    const {binding} =  this.props.component;
     const width = this.props.rect ? this.props.rect.width : componentProps.style.width;
     const height = this.props.rect ? this.props.rect.height : componentProps.style.height;
-    const data =componentProps.data;
+    const {dataSet} = this.context.store;
+    const bingdingValue =dataSet.has(binding)?dataSet.get(binding).data:[];
+  
     return (
       <div 
       key={this.props.index}
@@ -97,7 +105,7 @@ render() {
         {...pick(this.props, Object.keys(CanvasElementPropTypes))}
         getSize={this.getSize}
       >
-            <div ref={coxcomb=>this.coxcomb=coxcomb} data={data} style={{width,height}}></div>
+      <div ref={coxcomb=>this.coxcomb=coxcomb} data={bingdingValue} style={{width,height}}></div>
       </CanvasElement>
       </div>
     );
