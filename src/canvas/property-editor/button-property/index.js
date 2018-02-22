@@ -29,28 +29,23 @@ export default class TextProperty extends Component {
               <Left/>
               <Top/>
                <Width/>
-               <SelectTemplete propertyName="type" propertyLabel="类型" data={{'text':'单行文本','textarea':'多行文本'}}/>
-               <InputTemplete propertyName="maxLength" propertyLabel="最大输入长度"/>
-               <InputTemplete propertyName="minLength" propertyLabel="最小输入长度"/>
-               <InputTemplete propertyName="placeholder" propertyLabel="输入框占位文本"/>
+               <InputTemplete propertyName="label" propertyLabel="label" />
+               <SelectTemplete propertyName="size" propertyLabel="尺寸" data={{'large':'large','small':'small',"mini":'mini'}}/>
+               <SelectTemplete propertyName="type" propertyLabel="类型" data={{'primary':'primary','success':'success','warning':'warning','danger':'danger','info':'info','text':'text'}} />    
+               <BooleanTemplete propertyName="plain" propertyLabel="是否朴素按钮" data={{true:"true",false:"false"}}/>
+               <BooleanTemplete propertyName="loading" propertyLabel="是否加载中状态" data={{true:"true",false:"false"}}/>
                <BooleanTemplete propertyName="disabled" propertyLabel="禁用" data={{true:"true",false:"false"}}/>
-               <SelectTemplete propertyName="size" propertyLabel="输入框尺寸" data={{'large':'large','small':'small',"mini":'mini'}}/>
-               <InputTemplete propertyName="rows" propertyLabel="输入框行数	"/>
-               <BooleanTemplete propertyName="readOnly" propertyLabel="是否只读" data={{true:"true",false:"false"}}/>
-               <SelectTemplete propertyName="resize" propertyLabel="控制是否能被用户缩放"  data={{"none":"none","both":"both","horizontal":"horizontal",vertical:"vertical"}}/>
-               <InputTemplete propertyName="prepend" propertyLabel="输入框前置内容"/>
-               <InputTemplete propertyName="append" propertyLabel="输入框后置内容"/>
+               <SelectTemplete propertyName="icon" propertyLabel="图标" data={{'edit':'编辑','delete':'删除','search':'搜索','arrow-left':'上一页','arrow-right':'下一页'}} />    
+               <SelectTemplete propertyName="nativeType" propertyLabel="原生 type 属性" data={{'edit':'button','submit':'submit','reset':'reset'}} />    
            </div>
   }
   renderEvent=()=>{
     return <div>
-            <EInputTemplete eventName='focus' eventLabel='focus事件' />
-            <EInputTemplete eventName='blur' eventLabel='blur事件' />
-            <EInputTemplete eventName='change' eventLabel='change事件' />
+            <EInputTemplete eventName='click' eventLabel='click事件' />           
            </div>
   }
   renderBinding=()=>{
-     return   <Binding/>
+     return /*   <Binding/> */<div></div>
   }
   render() {    
     return (

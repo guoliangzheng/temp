@@ -8,6 +8,8 @@ import ComCobxData from './comCobxData'
 import Actions from './actions'
 import DataSet from './dataSet'
 import Binding from './binding'
+import Left from './left'
+import Top from './top'
 export {
             Width,
             Height,
@@ -18,5 +20,7 @@ export {
             ComCobxData,
             Actions,
             DataSet,
+            Left,
             Binding,
+            Top
         }

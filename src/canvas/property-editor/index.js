@@ -10,6 +10,7 @@ import TableProperty from './table-property'
 import ListProperty from './list-property'
 import FormProperty  from './form-property'
 import SlideProperty  from './silde-property'
+import ButtonProperty from './button-property'
 
 import { ElementTypes, BLACKLIST_CURRENT_ELEMENT_DESELECT } from "../../constants";
 import ComCobxProperty from "./coxcomb-property";
@@ -21,6 +22,7 @@ propertyEditorMappering.set(ElementTypes.LIST,ListProperty)
 propertyEditorMappering.set(ElementTypes.FORM,FormProperty)
 propertyEditorMappering.set(ElementTypes.SLIDE,SlideProperty)
 propertyEditorMappering.set(ElementTypes.COXCOMB,ComCobxProperty)
+propertyEditorMappering.set(ElementTypes.BUTTON,ButtonProperty)
 
 @observer
 class PropertyEditor extends Component {

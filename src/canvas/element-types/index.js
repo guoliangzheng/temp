@@ -8,7 +8,9 @@ import ListElement from "./list-element"
 import FormItem from './fromItem-element'
 import Form from './form-element'
 import CoxComb  from './coxcomb-element'
+import Button from './button-element'
 const elementFromType = new Map();
+elementFromType.set(ElementTypes.BUTTON,Button);
 elementFromType.set(ElementTypes.TEXT,TextElement);
 elementFromType.set(ElementTypes.IMAGE,ImageElement);
 elementFromType.set(ElementTypes.BOX,BoxElement);

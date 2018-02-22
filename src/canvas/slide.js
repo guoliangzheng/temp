@@ -274,7 +274,7 @@ class Slide extends Component {
 
     return connectDropTarget(
       <div canDrop={canDrop} isOver={isOver}   onMouseDown={this.handleMouseDown.bind(null,rootID)}
-      ref={(ref)=>{this.context.store.setDomRef(rootID,ref)}}  connectDropTarget={connectDropTarget} className={classes} style={{ ...currentSlide.props.style }} id={rootID}>
+      ref={(ref)=>{this.context.store.setDomRef(rootID,ref)}}  connectDropTarget={connectDropTarget} className={classes} style={{...currentSlide.props.style }} id={rootID}>
         {currentSlide && rootID && currentSlide.children.map(this.renderChild)}
         <SnapLines lines={this.state.activeSnapLines} scale={this.props.scale} />
       </div>

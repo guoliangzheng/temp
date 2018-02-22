@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { map, omit, pick } from "lodash";
 import { observer } from "mobx-react";
 import classNames from "classnames";
-import { Input } from 'element-react';
+import { Button } from 'element-react';
 import _ from "lodash";
 import TilteUtil from '../../util/titleUtil'
 import { findDOMNode } from "react-dom";
@@ -13,7 +13,7 @@ import CanvasElement, { CanvasElementPropTypes } from "../../canvas-element";
 import styles from "./index.css";
 import PropTypes from 'prop-types'
 @observer
-export default class TextElement extends Component {
+export default class ButtonElement extends Component {
   static propTypes = {
     ...CanvasElementPropTypes,
     rect: PropTypes.object,
@@ -42,6 +42,7 @@ export default class TextElement extends Component {
   render() {
     const componentProps = this.props.component.props;
     const {event,binding} =  this.props.component;
+    const {label} = componentProps;
     const {actions,dataSet} = this.context.store;
     const bingdingValue =dataSet.has(binding)?dataSet.get(binding).data:'';
     let width = componentProps.style.width ? componentProps.style.width : "auto";
@@ -65,7 +66,9 @@ export default class TextElement extends Component {
               resizeVertical={false}
               getSize={this.getSize}
             >      
-            <Input  {...componentProps} {...eventObject} value={bingdingValue}  style={{width:'100%',height:'100%'}} />
+            <Button  {...componentProps} {...eventObject} value={bingdingValue}  style={{width:'100%',height:height}} >
+             {label}
+            </Button>
             </CanvasElement>
       </div>
     );

@@ -16,6 +16,7 @@ export const ElementTypes = {
   TABLE: "Table",
   IFRAME: "IFrame",
   COXCOMB:"Coxcomb",
+  BUTTON:'Button'
 };
 export const IconTypes = {
   ...ElementTypes

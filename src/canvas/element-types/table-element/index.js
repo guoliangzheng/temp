@@ -16,12 +16,15 @@ export default class TableElement extends Component {
     })
   }
 
-  getSize = () => ({
-    width: this.props.component.props.style.width,
-    height: this.props.component.props.style.height,
+  getSize = () => {
+    const {width,height}=this.context.store.getDom(this.props.index).getBoundingClientRect();
+    console.log("table width height",width,height);
+    return  {
+    width,
+    height,
     left: this.props.component.props.style.left,
     top: this.props.component.props.style.top
-  })
+  }}
   static contextTypes = {
     store: PropTypes.object
   };
@@ -42,7 +45,6 @@ export default class TableElement extends Component {
     const {summaryMethod} = componentProps;
     functionObject['summaryMethod']=actions.has(summaryMethod)?actions.get(summaryMethod).action:null;
 
-    debugger;
 
     const columns= componentProps.columns;
     return (
@@ -51,14 +53,14 @@ export default class TableElement extends Component {
         className={this.props.classes}
         onMouseDown={this.props.mouseDownAction}
         onDragOver={this.props.dragOverAction}
-        style={{top:this.props.postions.top,left:this.props.postions.left}}
+        style={{top:this.props.postions.top,left:this.props.postions.left,width,height}}
       >
         <PotentialError>
             <CanvasElement
               {...pick(this.props, Object.keys(CanvasElementPropTypes))}
               getSize={this.getSize}
             >
-            <Table  {...componentProps} {...functionObject} columns={columns} height={height} style={{width}} data={bingdingValue} />
+            <Table  {...componentProps} {...functionObject} columns={columns} height={height} style={{width:'100%'}} data={bingdingValue} />
             </CanvasElement>
         </PotentialError>
       </div>

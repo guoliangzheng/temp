@@ -58,7 +58,7 @@ export default class Store{
           parent:null,
           id: id,
           type:'Slide',
-          props: { style: {height:'1000',width:'700'}, transition: ["slide"] },
+          props: { style: {height:'100%',width:'100%'}, transition: ["slide"] },
           children: [],
           event:{
             init:'init'
@@ -66,6 +66,7 @@ export default class Store{
          })
          this.components = new Map();
          this.actions = new Map();
+         this.actions.set("init",{name:'init',body:'',paramters:'',action:function(){},describe:''});
          this.dataSet = new Map();
          this.components.set(id,this.slide);
         }
@@ -101,7 +102,6 @@ export default class Store{
     element.props = mergedProps;
     element.id = id;
     element.parent = selectItemid;
-    debugger;
     transaction(() => {
       parent.children.push(id);
       this.components.set(id,element);
@@ -119,9 +119,14 @@ export default class Store{
     if(top<=0) top = 0;
     return {left,top}
   }
+  /*设计dom的虚拟节点 */
   setDomRef(id,obj){
     this.domRefs.set(id,obj);
   }
+  getDom(id){
+    return  findDOMNode(this.domRefs.get(id));
+  }
+
   updateElementResizeState(isResizingElement, cursor = null) {
     transaction(() => {
       this.cursorType = cursor;
@@ -228,9 +233,6 @@ export default class Store{
       this.actions.set(name,action);    
      }) 
   }
- 
-
-
   updateElementParent(props){
 
 

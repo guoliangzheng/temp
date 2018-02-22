@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import styles from './index.css'
 import { observer } from "mobx-react";
 @observer
-export default class Width extends Component {
+export default class Top extends Component {
       
   static contextTypes = {
     store:PropTypes.object
   }
   constructor(){
      super()
-     this.propertyName = "width";
+     this.propertyName = "top";
   }
+
+
+  
   handleChange = (ev) => {
-    //const value = parseInt(ev.target.value.match(/[0-9]*/)[0], 10);
-    const value = ev.target.value;
-    //const result = isNaN(value) ? "" : value;
-    const result = value;
+    const value = parseInt(ev.target.value.match(/[0-9]*/)[0], 10);
+    const result = isNaN(value) ? "" : value;
     this.updateStore(result);
   }
   updateStore(updatedValue = 0) {
@@ -36,9 +37,9 @@ export default class Width extends Component {
     const style = props.style;
     return (
             <div className={styles.propertyGroup}>
-                <label className={styles.controlLable}>宽度</label>
+                <label className={styles.controlLable}>居上</label>
                 <div >
-                    <input className={styles.propertyControl} type="text" value={style.width} onChange={this.handleChange}/>
+                    <input className={styles.propertyControl} type="text" value={style.top} onChange={this.handleChange}/>
                 </div>
             </div>
         )

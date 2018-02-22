@@ -171,6 +171,30 @@ elements[ElementTypes.TABLE] = new Element( {
   binding:[],
   children: []
 });
+elements[ElementTypes.BUTTON] =new Element( {
+  type: ElementTypes.BUTTON,
+  props: {
+    style: {
+      width: 100,
+      height: 50,
+      left: 0,
+      top: 0
+    },
+    label:'按钮',
+    size:'large',
+    type:'primary',
+    plain:false,
+    loading:false,
+    disabled:false,
+    icon:'',
+    nativeType:'button'
+  },
+  event:{//事件定义  
+   click:''
+  },
+  children: []
+});
+
 
 elements[ElementTypes.FORM] = new From({
   type: ElementTypes.FORM,

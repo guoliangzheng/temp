@@ -6,6 +6,7 @@ import styles from "./index.css";
 import { ElementTypes } from "../constants";
 
 const elements = [
+                    ElementTypes.BUTTON,
                     ElementTypes.TEXT,
                     ElementTypes.IMAGE,
                     ElementTypes.TABLE,

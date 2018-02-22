@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import styles from "../index.css";
 import { map, omit, find } from "lodash";
 import { DatePicker } from 'antd';
-import {Width,Height,TableColumn,TableDataSource,Binding} from '../base-property';
+import {Width,Height,TableColumn,TableDataSource,Binding,Left,Top} from '../base-property';
 import {Tabs} from 'element-react';
 import InputTemplete from '../property-templete/input-templete'
 import SelectTemplete from '../property-templete/select-templete'
@@ -45,6 +45,8 @@ export default class TableProperty extends Component {
   renderProperty=()=>{
     
     return <div>
+             <Left/>
+              <Top/>
                <Width/>
                <Height/>
                <BooleanTemplete propertyName="stripe" propertyLabel="是否斑马纹"/>
