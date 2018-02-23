@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styles from "./element-item.css";
 import { DragSource } from 'react-dnd'
-
+import ICon from '../icon'
 const boxSource = {
 	beginDrag(props) {
 		return {
@@ -54,6 +54,7 @@ class ElementItem extends Component {
 		const {  connectDragSource } = this.props 
     return  connectDragSource(
        <li className={styles.item}>
+        <ICon type={elementType}/>
         <span>{label}</span>
       </li>
     );
