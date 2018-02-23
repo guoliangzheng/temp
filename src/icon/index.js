@@ -1,22 +1,12 @@
 import React, { Component} from "react";
 import { IconTypes } from "../constants";
-import { TEXT, IMAGE, PLOTLY, CODE } from "../assets/icons";
 import styles from "./index.css";
 import PropTypes from 'prop-types'
-const iconTypeMap = {
-  [IconTypes.TEXT]: TEXT,
-  [IconTypes.IMAGE]: IMAGE,
-  [IconTypes.PLOTLY]: PLOTLY,
-  [IconTypes.CODE]: CODE
-};
-
 class Icon extends Component {
-  static propTypes = {
-    name: PropTypes.oneOf(Object.keys(IconTypes).map(key => IconTypes[key])).isRequired
-  };
+
 
   render() {
-    const { name, ...rest } = this.props;
+    const { path } = this.props;
     return (
       <span
         className={styles.icon}

@@ -1,5 +1,4 @@
 import React, { Component} from "react";
-import { RESIZECORNER } from "../assets/icons";
 import PropTypes from 'prop-types';
 import styles from "./resize-node.css";
 

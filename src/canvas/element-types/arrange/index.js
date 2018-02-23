@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BRINGTOFRONT, BRINGFORWARD, SENDBACKWARD, SENDTOBACK } from "../../../assets/icons";
 import PropTypes from 'prop-types';
 
 import styles from "./index.css";
