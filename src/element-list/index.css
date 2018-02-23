@@ -31,4 +31,71 @@
     width: 100%;
     height: 100%;
 }
+.section{
 
+  -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+.bottom{
+  display: flex;
+  height: 40px;
+  background: #fff;
+  border-top: 1px solid #dedee4;
+}
+.bottom a{
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 12px;
+  color: #8d9ea7;
+  margin: 10px 0;
+  -ms-flex-preferred-size: 60px;
+  flex-basis: 60px;
+  color: #5b6b73;
+  border-left: 1px solid #c8cdd0;
+  display: flex;
+}
+.buttonGroup{
+
+  -webkit-box-flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    -ms-flex: 1;
+    flex: 1;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -ms-flex-align: stretch;
+    list-style: none;
+}
+.buttonGroup li {
+  -webkit-box-flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+  align-items: stretch;
+}
+
+.toggle-btn {
+  margin: 10px 0;
+  -ms-flex-preferred-size: 60px;
+  flex-basis: 60px;
+  color: #5b6b73;
+  border-left: 1px solid #c8cdd0;
+}
+.vertical{
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 165px;
+}

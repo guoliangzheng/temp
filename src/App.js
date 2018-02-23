@@ -12,13 +12,11 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import styles from "./App.css";
 import 'element-theme-default';
 require('codemirror/lib/codemirror.css');
-
+let store = new Store();
 class App extends Component {
   render() {
-    let store = new Store();
-
     return (
-      <div>
+      <div style={{width:'100%',height:'100%'}}>
          <DragDropContextProvider backend={HTML5Backend}>
           <Provider store={store}>
             <Canvas></Canvas>

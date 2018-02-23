@@ -28,44 +28,56 @@ class ElementList extends Component {
     super(props);
 
     this.state = {
-      listLeft: 350
+      isfold: false
     };
   }
 
-  componentDidMount = () => {
-    this.resize();
-    window.addEventListener("load", this.resize);
-    window.addEventListener("resize", this.resize);
+ 
+  OnFold =()=>{
+    const {fold} = this.props;
+    this.setState({isfold:true})
+    fold();
+  }
+  onSpread=()=>{
+    const {spread} = this.props;
+    this.setState({isfold:false});
+    spread();
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("load", this.resize);
-    window.removeEventListener("resize", this.resize);
-  }
 
-  resize = () => {
-    const clientWidth = document.body.clientWidth;
-
-    const listLeft = (clientWidth - wrapperWidth) / 2;
-
-    this.setState({
-      listLeft
-    });
-  }
 
   render() {
+    const {isfold} = this.state;
     return (
       <div className={styles.content}>
-        <ul className={styles.list}>
-        {elements.map((element, i) => (
-          <ElementItem
-            key={element.type}
-            element = {element}
-            elementType={element.type}
-            {...this.props}
-          />
-        ))}
-        </ul>
+        <section className={styles.section}>
+          <ul className={styles.list}>
+          {elements.map((element, i) => (
+            <ElementItem
+              key={element.type}
+              element = {element}
+              elementType={element.type}
+              {...this.props}
+            />
+          ))}
+          </ul>
+        </section>
+        <div className={styles.bottom +" "+(!isfold?'':styles.vertical)  }>
+            <ul className={styles.buttonGroup}>
+              <li>
+                <a> 教程</a>
+              </li>
+              <li>
+               <a> 快捷键</a>
+              </li>
+              {!isfold?'':
+                <li>
+                <a onClick={this.onSpread}>展开</a>
+                </li>
+              }
+            </ul>
+           {isfold?'':<a title="" data-original-title="收起" onClick={this.OnFold}>收起</a>}
+        </div>
       </div>
     );
   }

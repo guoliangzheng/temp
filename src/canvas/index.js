@@ -23,7 +23,7 @@ class Canvas extends Component  {
     
       constructor(props) {
         super(props);
-        this.state = { };
+        this.state = {elemenetlistWidth:244 };
       }
      componentDidMount() {
         this.resize();
@@ -40,6 +40,14 @@ class Canvas extends Component  {
 
          return   this.context.store.getDropPosition(dropTagId);
 
+      }
+      //收缩列表
+      foldElementList=()=>{
+        this.setState({elemenetlistWidth:82});
+      }
+      //展开列表
+      spreadElementList=()=>{
+        this.setState({elemenetlistWidth:244});
       }
     
       getDefaultSize = (type) => {
@@ -134,12 +142,13 @@ class Canvas extends Component  {
         return null;
       }
       render(){
+        const {elemenetlistWidth} =this.state;
         const {
           isDraggingElement,
           isDraggingSlide,
           scale,
           top,
-          left
+          left,
          } = this.context.store;   
          return (
           <div 
@@ -153,11 +162,13 @@ class Canvas extends Component  {
             <Tools/>
          </div>        
          <div className={styles.mainContent}>     
-              <aside  className={styles.elemenetlist}   style={{width:244}}>
+              <aside  className={styles.elemenetlist}   style={{width:elemenetlistWidth}}>
                 <ElementList 
                   scale={scale}
                   getDropPosition={this.getDropPosition}
                   onDrop={this.handleDrop}
+                  fold = {this.foldElementList}
+                  spread = {this.spreadElementList}
                 />
               </aside>
               <div  className={styles.componentTree}   style={{width:200}}>
@@ -167,9 +178,8 @@ class Canvas extends Component  {
                 <div
                   style={{
                     transformOrigin: "top left",
-                    transform: `scale(${scale})`,
-                    width: 1000, 
-                    height: 700,
+                    width: '100%', 
+                    height: '100%',
                     top,
                     left,
                     backgroundColor: "#999"
@@ -182,7 +192,7 @@ class Canvas extends Component  {
                   <SnapLines lines={this.state.activeSnapLines} scale={scale} />
                 </div>
               </div>
-              <aside className={styles.propertyEdior} style={{width:200}}>
+              <aside className={styles.propertyEdior} style={{width:244}}>
                <PropertyEditor/>
              </aside>
             </div>
