@@ -1,15 +1,9 @@
 import React, { Component} from "react";
-import { Motion, spring } from "react-motion";
 import PropTypes from 'prop-types';
-import {
-  SpringSettings,
-  BLACKLIST_CURRENT_ELEMENT_DESELECT
-} from "../constants";
-import Icon from "../icon";
+
 import styles from "./element-item.css";
 import { DragSource } from 'react-dnd'
 
-const addedPadding = 2;
 const boxSource = {
 	beginDrag(props) {
 		return {
@@ -50,71 +44,18 @@ class ElementItem extends Component {
   static contextTypes = {
     store: PropTypes.object
   };
-
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      delta: [0, 0],
-      mouseStart: [0, 0],
-      mouseOffset: [0, 0],
-      canvasOffset: [0, 0],
-      isPressed: false,
-      isUpdating: false
-    };
   }
-
- 
-
   render() {
     const {
-      elementType,
-      elementLeft,
-      elementTop,
-      elementWidth,
-      elementHeight
+      elementType,element:{label}
     } = this.props;
-
-    const {
-      isUpdating,
-      isOverCanvasPosition,
-      isPressed,
-      delta: [x, y],
-      mouseOffset: [offsetX, offsetY]
-    } = this.state;
-
-    const motionStyles = {
-      translateX: spring(x - offsetX, SpringSettings.DRAG),
-      translateY: spring(y - offsetY, SpringSettings.DRAG),
-      opacity: spring(isPressed ? 0.9 : 0, SpringSettings.DRAG),
-      padding: spring(isPressed ? 2 : 0, SpringSettings.DRAG)
-    };
-
-    if (isUpdating) {
-      motionStyles.translateX = isPressed ? x - offsetX : 0;
-      motionStyles.translateY = isPressed ? y - offsetY : 0;
-      motionStyles.padding = isPressed ? addedPadding : 0;
-      motionStyles.opacity = 0.9;
-    }
-
-		const { isDragging, connectDragSource } = this.props 
+		const {  connectDragSource } = this.props 
     return  connectDragSource(
-      <div
-        className={`${styles.wrapper} ${BLACKLIST_CURRENT_ELEMENT_DESELECT}`}
-        style={{
-          width: elementWidth,
-          height: elementHeight,
-          cursor: isPressed ? "-webkit-grabbing" : "-webkit-grab"
-        }}
-      >
-      
-        <div
-          className={styles.item}
-        >
-          <h4>
-            {elementType}
-          </h4>
-        </div>
-      </div>
+       <li className={styles.item}>
+        <span>{label}</span>
+      </li>
     );
   }
 }

@@ -4,25 +4,20 @@ import PropTypes from 'prop-types';
 import ElementItem from "./element-item";
 import styles from "./index.css";
 import { ElementTypes } from "../constants";
-
 const elements = [
-                    ElementTypes.BUTTON,
-                    ElementTypes.TEXT,
-                    ElementTypes.IMAGE,
-                    ElementTypes.TABLE,
-                    ElementTypes.LIST,
-                    ElementTypes.BOX,
-                    ElementTypes.LAYOUT,
-                    ElementTypes.FORM,
-                    ElementTypes.FORMIITEM,
-                    ElementTypes.COXCOMB
+                    {type:ElementTypes.BUTTON,label:'按钮'},
+                    {type:ElementTypes.TEXT,label:'文本框'},
+                    {type:ElementTypes.IMAGE,label:'图形'},
+                    {type:ElementTypes.TABLE,label:'表格'},
+                    {type:ElementTypes.LIST,label:'列表'},
+                    {type:ElementTypes.FORM,label:'表单'},
+                    {type:ElementTypes.FORMIITEM,label:'表单项'},
+                    {type:ElementTypes.COXCOMB,label:'南丁格尔图'}
                   ];
 const elementWidth = 60;
-const elementHeight = 48;
 const elementMarginRight = 25;
 const wrapperWidth = elements.length * (elementWidth + elementMarginRight) - elementMarginRight;
 
-const elementTop = 8;
 
 class ElementList extends Component {
   static propTypes = {
@@ -59,21 +54,18 @@ class ElementList extends Component {
   }
 
   render() {
-    const { listLeft } = this.state;
     return (
-      <div className={styles.list}>
-        {elements.map((elementType, i) => (
+      <div className={styles.content}>
+        <ul className={styles.list}>
+        {elements.map((element, i) => (
           <ElementItem
-            key={elementType}
-            elementType={elementType}
+            key={element.type}
+            element = {element}
+            elementType={element.type}
             {...this.props}
-            elementTop={elementTop}
-            elementLeft={listLeft + ((elementWidth + elementMarginRight) * i)}
-            elementWidth={elementWidth}
-            elementHeight={elementHeight}
-            scale={this.props.scale}
           />
         ))}
+        </ul>
       </div>
     );
   }

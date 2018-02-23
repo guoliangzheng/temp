@@ -14,6 +14,7 @@ import Slide from "./slide";
 import PropertyEditor  from './property-editor'
 import { Button } from 'antd';
 import ComponentTree from './componentTree'
+import Tools from './tools'
 @observer
 class Canvas extends Component  {
      static contextTypes = {
@@ -144,54 +145,48 @@ class Canvas extends Component  {
           <div 
             className={styles.canvasWrapper}
             style={{
-             
               cursor: isDraggingElement ? "move" : "auto",
               pointerEvents: isDraggingSlide ? "none" : "auto"
             }}
-          >
-           
-        <div  style={{float:'left', display:'inline-block',width:200}}>
-        <ElementList 
-          scale={scale}
-          getDropPosition={this.getDropPosition}
-          onDrop={this.handleDrop}
-        />
-        </div>
-        <div  style={{float:'left', display:'inline-block',width:200}}>
-        <ComponentTree />
-        </div>
-        <div
-            style={{
-              width: 1000, 
-              height: 700,
-              cursor: isDraggingElement ? "move" : "auto",
-              pointerEvents: isDraggingSlide ? "none" : "auto"
-            }}
-          >
-           <Button onClick={()=>{this.context.store.load()}} >加载</Button>
-          <Button onClick={()=>{alert(this.context.store.serialize())}} >保存</Button>  <Button onClick={()=>this.context.store.save()} >生成</Button> 
-          <Button onClick={()=>this.context.store.analysis()} >预览</Button>
-          <div className={styles.canvas} style={{float:'left',display:'inline-block',}} id="canvas" ref="container">
-              <div
-                style={{
-                  transformOrigin: "top left",
-                  transform: `scale(${scale})`,
-                  width: 1000, 
-                  height: 700,
-                  top,
-                  left,
-                  backgroundColor: "#999"
-                }}
-              >  
-                <Slide
-                  ref={(slide) => { this.slideRef = slide; }}
+          >   
+         <div className={styles.toolbar}>
+            <Tools/>
+         </div>        
+         <div className={styles.mainContent}>     
+              <aside  className={styles.elemenetlist}   style={{width:244}}>
+                <ElementList 
                   scale={scale}
+                  getDropPosition={this.getDropPosition}
+                  onDrop={this.handleDrop}
                 />
-                <SnapLines lines={this.state.activeSnapLines} scale={scale} />
+              </aside>
+              <div  className={styles.componentTree}   style={{width:200}}>
+                 <ComponentTree />
               </div>
+            <div className={styles.canvas}  id="canvas" ref="container">
+                <div
+                  style={{
+                    transformOrigin: "top left",
+                    transform: `scale(${scale})`,
+                    width: 1000, 
+                    height: 700,
+                    top,
+                    left,
+                    backgroundColor: "#999"
+                  }}
+                >  
+                  <Slide
+                    ref={(slide) => { this.slideRef = slide; }}
+                    scale={scale}
+                  />
+                  <SnapLines lines={this.state.activeSnapLines} scale={scale} />
+                </div>
+              </div>
+              <aside className={styles.propertyEdior} style={{width:200}}>
+               <PropertyEditor/>
+             </aside>
             </div>
-           </div>
-           <PropertyEditor/>
+           
           </div>
         );
       }

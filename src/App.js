@@ -18,7 +18,7 @@ class App extends Component {
     let store = new Store();
 
     return (
-      <div className={styles.container}>
+      <div>
          <DragDropContextProvider backend={HTML5Backend}>
           <Provider store={store}>
             <Canvas></Canvas>
