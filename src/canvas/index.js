@@ -15,6 +15,7 @@ import PropertyEditor  from './property-editor'
 import { Button } from 'antd';
 import ComponentTree from './componentTree'
 import Tools from './tools'
+import HRuler from './hRuler';
 @observer
 class Canvas extends Component  {
      static contextTypes = {
@@ -66,8 +67,8 @@ class Canvas extends Component  {
         const height = offsetHeight;
     
         // TODO: need better logic for handling scale and content scale
-        const shouldScale = offsetWidth < 1000 || offsetHeight < 700;
-    
+/*         const shouldScale = offsetWidth < 1000 || offsetHeight < 700;
+ */    const shouldScale=false;
         const xScale = offsetWidth < 1000 ? offsetWidth / 1000 : 1;
         const yScale = offsetHeight < 700 ? offsetHeight / 700 : 1;
     
@@ -180,11 +181,15 @@ class Canvas extends Component  {
                     transformOrigin: "top left",
                     width: '100%', 
                     height: '100%',
+                    transform: `scale(${scale})`,
                     top,
                     left,
                     backgroundColor: "#999"
                   }}
-                >  
+                > 
+               {/*  <HRuler  maxValue={200}
+                    minValue={0}
+                    divide={10} precision={0.1} getCurrentValue={100}/>  */}
                   <Slide
                     ref={(slide) => { this.slideRef = slide; }}
                     scale={scale}
