@@ -21,11 +21,11 @@ export default class ToolBars extends Component {
                        <MdSave/>
                       <span type="tip">保存</span>
                     </a>
-                    <a className={styles.aStyle}>
+                    <a className={styles.aStyle} onClick={()=>{this.context.store.undo()}} >
                       <MdUndo/>
-                      <span type="tip" onClick={()=>{this.context.store.undo()}} >撤销</span>
+                      <span type="tip" >撤销</span>
                     </a>
-                    <a className={styles.aStyle}>
+                    <a className={styles.aStyle} onClick={()=>{this.context.store.redo()}} >
                       <MdRedo/>
                       <span type="tip">恢复</span>
                     </a>

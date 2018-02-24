@@ -1,4 +1,4 @@
-import { observable, computed, transaction, asReference,autorun } from "mobx";
+import {toJS, observable, computed, transaction, asReference,autorun } from "mobx";
 import Immutable, { from } from "seamless-immutable";
 import _,{ merge, mergeWith, pick, omit } from "lodash";
 import uuid from '../util/uuid'
@@ -42,6 +42,8 @@ export default class Store{
     @observable dropTagElementId = null;
     @observable previeComponents = null;
     history = [];//所有操作产生的对象信息
+
+    historyIndex = -1;
     domRefs = new Map();
 
     @computed get currentSlide() {
@@ -70,6 +72,7 @@ export default class Store{
          this.actions.set("init",{name:'init',body:'',paramters:'',action:function(){},describe:''});
          this.dataSet = new Map();
          this.components.set(id,this.slide);
+         this.addhistroy();
         }
         window.dataSet = this.dataSet;
         window.actions = this.actions;
@@ -166,7 +169,6 @@ export default class Store{
       const newColumn =  merge(column, props);
       transaction(()=>{
         this.addhistroy();
-
         var newCloums =[];
         for(let i =0,length=columns.length;i<length;i++){
           if(i==index){
@@ -185,7 +187,6 @@ export default class Store{
     const columns = currentElement.props.columns;
     transaction(()=>{
       this.addhistroy();
-
       var newCloums =[];
       for(let i =0,length=columns.length;i<length;i++){
           newCloums[i] = columns[i];
@@ -334,13 +335,25 @@ export default class Store{
     transaction(() => {
       const me = this;
        const snapshot={
-         components:_.clone(me.components),
-         rootID :_.clone( me.rootID),
-         dataSet :_.clone(me.dataSet),
-         actions: _.clone(me.actions)
+         components:this._ObjectToMap(toJS(me.components)),
+         rootID : toJS(me.rootID),
+         dataSet :this._ObjectToMap(toJS(me.dataSet)),
+         actions:this._ObjectToMap( toJS(me.actions)),
+         currentElement:toJS(me.currentElement)
        }
-       this.history.push(snapshot) 
+       let length = this.history.length;
+       this.history[length] = snapshot; 
+       this.historyIndex = length;
     })
+    console.log('histroyt add',this.history.length);
+  }
+  _ObjectToMap(object){
+    let map = new Map();
+    for(let key in object){
+      map.set(key,object[key]);
+    }
+    return map;
+
   }
   serialize(){
     this.xml = new Array();
@@ -364,17 +377,43 @@ export default class Store{
       this.components = this.tempCompents; */
     })
   }
-
+  /*恢复到操作前的内容*/
   undo(){
     transaction(()=>{
       const length = this.history.length;
-      const snapshot = this.history[length-2];
-      console.log(this.history);
+      const backIndex = this.historyIndex-1;
+      if((length-1)<backIndex){
+        return ;
+      }
+      const snapshot = this.history[backIndex];
+      if(snapshot==null) return;
       this.components = snapshot.components;
       this.dataSet = snapshot.dataSet;
       this.actions  = snapshot.actions;
-      this.rootID = this.rootID;
+      this.rootID = snapshot.rootID;
+      this.currentElement = snapshot.currentElement;
+      this.historyIndex = backIndex;
     })
+  }
+  /*恢复恢复前的操作 */
+  redo(){
+    transaction(()=>{
+      const length = this.history.length;
+      const fowarIndex = this.historyIndex+1;
+      if((length-1)>fowarIndex){
+        return ;
+      }
+      const snapshot = this.history[fowarIndex];
+      if(snapshot==null) return;
+      this.components = snapshot.components;
+      this.dataSet = snapshot.dataSet;
+      this.actions  = snapshot.actions;
+      this.rootID = snapshot.rootID;
+      this.currentElement = snapshot.currentElement;
+      this.historyIndex = fowarIndex;
+    })
+
+
   }
 
   deserializeRoot(xmlNode){
