@@ -1,6 +1,6 @@
 import { observable, computed, transaction, asReference,autorun } from "mobx";
 import Immutable, { from } from "seamless-immutable";
-import { merge, mergeWith, pick, omit } from "lodash";
+import _,{ merge, mergeWith, pick, omit } from "lodash";
 import uuid from '../util/uuid'
 import elementMap from "../canvas/elements";
 import {ElementTypes} from "../constants"
@@ -41,6 +41,7 @@ export default class Store{
     @observable poprtyeChange =0;
     @observable dropTagElementId = null;
     @observable previeComponents = null;
+    history = [];//所有操作产生的对象信息
     domRefs = new Map();
 
     @computed get currentSlide() {
@@ -103,6 +104,7 @@ export default class Store{
     element.id = id;
     element.parent = selectItemid;
     transaction(() => {
+      this.addhistroy();
       parent.children.push(id);
       this.components.set(id,element);
     })
@@ -150,9 +152,10 @@ export default class Store{
   updateElementProps(props) {
       if(this.currentElement==null) return;
       transaction(() => {
+        this.addhistroy();
         const currentElement = this.components.get(this.currentElement);
         const newProps = merge(currentElement.props, props);
-        currentElement.props =newProps;
+        currentElement.props =newProps; 
       })
     }
     //更新table  column
@@ -162,6 +165,8 @@ export default class Store{
       const column = columns[index];
       const newColumn =  merge(column, props);
       transaction(()=>{
+        this.addhistroy();
+
         var newCloums =[];
         for(let i =0,length=columns.length;i<length;i++){
           if(i==index){
@@ -179,6 +184,8 @@ export default class Store{
     const currentElement = this.components.get(this.currentElement);
     const columns = currentElement.props.columns;
     transaction(()=>{
+      this.addhistroy();
+
       var newCloums =[];
       for(let i =0,length=columns.length;i<length;i++){
           newCloums[i] = columns[i];
@@ -193,6 +200,8 @@ export default class Store{
   updateElementEvent(event) {
     if(this.currentElement==null) return;
     transaction(() => {
+      this.addhistroy();
+
       const currentElement = this.components.get(this.currentElement);
       const newEvent = merge(currentElement.event, event);
       currentElement.event =newEvent;
@@ -202,6 +211,8 @@ export default class Store{
    updateElementBinding(binding) {
     if(this.currentElement==null) return;
     transaction(() => {
+      this.addhistroy();
+
       const currentElement = this.components.get(this.currentElement);
       currentElement.binding =binding;
     })
@@ -212,6 +223,8 @@ export default class Store{
     const {name} = action;
     data[eventName] =name;
     transaction(() => {
+      this.addhistroy();
+
       const currentElement = this.components.get(this.currentElement);
       const newEvent = merge(currentElement.event, data);
       currentElement.event =newEvent;
@@ -228,6 +241,8 @@ export default class Store{
   bindingActionOnProps(action,propName){
     const {name} = action;
     transaction(() => {
+      this.addhistroy();
+
       const currentElement = this.components.get(this.currentElement);
       currentElement.props[propName] =name;
       this.actions.set(name,action);    
@@ -262,32 +277,41 @@ export default class Store{
     return this.poprtyeChange;
   }
   addAction(action){
-    const {name} = action;
-    this.actions.set(name,action);
+    transaction(()=>{
+      this.addhistroy();
+      const {name} = action;
+      this.actions.set(name,action);
+    })
   }
   addDataSet(dataSet){
-    const {name} = dataSet;
-    this.dataSet.set(name,dataSet);
+    transaction(()=>{
+      this.addhistroy();
+      const {name} = dataSet;
+      this.dataSet.set(name,dataSet);
+    })
   }
   addFromItem(formID,item){
-    const form = this.components.get(formID);
-    const {label,type} = item;
-    let formItem = elementMap[ElementTypes.FORMIITEM]
-    formItem.props.label = label;
-    const formItemId = uuid();
-    formItem.parent = formID;
-    formItem.id  = formItemId;
+    transaction(()=>{
+      this.addhistroy();
+      const form = this.components.get(formID);
+      const {label,type} = item;
+      let formItem = elementMap[ElementTypes.FORMIITEM]
+      formItem.props.label = label;
+      const formItemId = uuid();
+      formItem.parent = formID;
+      formItem.id  = formItemId;
 
-    let element = elementMap[type];
-    const elementid = uuid();
-    element.parent = formItemId;
-    element.id = elementid;
+      let element = elementMap[type];
+      const elementid = uuid();
+      element.parent = formItemId;
+      element.id = elementid;
 
-    form.children.push(formItemId);
-    formItem.children.push(elementid);
-    this.components.set(formItemId,formItem);
-    this.components.set(elementid,element); 
- 
+      form.children.push(formItemId);
+      formItem.children.push(elementid);
+      this.components.set(formItemId,formItem);
+      this.components.set(elementid,element); 
+    })
+
   }
   @computed get currentComponents(){
     const currentElement = this.components.get(this.currentElement);
@@ -305,6 +329,19 @@ export default class Store{
     return currentElement;
   }
 
+  //所有变化添加到历史记录中
+  addhistroy (){
+    transaction(() => {
+      const me = this;
+       const snapshot={
+         components:_.clone(me.components),
+         rootID :_.clone( me.rootID),
+         dataSet :_.clone(me.dataSet),
+         actions: _.clone(me.actions)
+       }
+       this.history.push(snapshot) 
+    })
+  }
   serialize(){
     this.xml = new Array();
     this.xml.push('<?xml version="1.0" encoding="UTF-8" ?>'); 
@@ -328,6 +365,17 @@ export default class Store{
     })
   }
 
+  undo(){
+    transaction(()=>{
+      const length = this.history.length;
+      const snapshot = this.history[length-2];
+      console.log(this.history);
+      this.components = snapshot.components;
+      this.dataSet = snapshot.dataSet;
+      this.actions  = snapshot.actions;
+      this.rootID = this.rootID;
+    })
+  }
 
   deserializeRoot(xmlNode){
     this.tempCompents = new Map();

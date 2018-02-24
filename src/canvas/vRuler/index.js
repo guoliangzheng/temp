@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styles from "./index.css";
 
-export default class HRuler extends Component {
+export default class VRuler extends Component {
 
      constructor(props){
          super(props);
@@ -35,21 +35,23 @@ export default class HRuler extends Component {
         ctx.strokeStyle = 'rgba(255,0,0,0.5)'; 
 
         //高的
-        for (var i = 0; i < width/100; i++) {
-              const x = i*100;
-              ctx.moveTo(x, 0);
-              ctx.lineTo(x, height);  
-              ctx.fillText(x,x,10);
+        for (var i = 0; i < height/100; i++) {
+              const y = i*100;
+              ctx.moveTo(0, y);
+              ctx.lineTo(width, y);  
+           
+              ctx.fillText(y,5,y);
 
         } 
         //矮的
-        for (var i = 0; i < width/10; i++) {
-          const x = i*10;
-          if(!x%100==0){
-            ctx.moveTo(x, height);
-            ctx.lineTo(x, height-height/3);
-          }  
-    } 
+        for (var i = 0; i < height/10; i++) {
+          const y = i*10;
+          if(!y%100==0){
+  
+            ctx.moveTo(width, y);
+            ctx.lineTo(width-width/3, y);  
+          }   
+       }  
         ctx.stroke(); 
       }
       updateSize=()=>{

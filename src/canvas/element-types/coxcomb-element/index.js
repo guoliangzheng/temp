@@ -45,7 +45,6 @@ export default class CoxCombElement extends Component {
 }
 
 componentDidUpdate() {
-  console.log("old",this.oldWidth,this.oldWidth)
   const componentProps = this.props.component.props;
   const width = this.props.rect ? this.props.rect.width : componentProps.style.width;
   const height = this.props.rect ? this.props.rect.height : componentProps.style.height;

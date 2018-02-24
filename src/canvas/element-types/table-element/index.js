@@ -18,7 +18,6 @@ export default class TableElement extends Component {
 
   getSize = () => {
     const {width,height}=this.context.store.getDom(this.props.index).getBoundingClientRect();
-    console.log("table width height",width,height);
     return  {
     width,
     height,

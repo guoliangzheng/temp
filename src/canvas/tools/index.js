@@ -4,10 +4,16 @@ import styles from "./index.css";
 import {MdSave,MdUndo,MdRedo,MdDelete,MdFormatAlignCenter,MdFormatAlignJustify,MdFormatAlignLeft,MdFormatAlignRight,MdDone} from 'react-icons/lib/md'
 
 export default class ToolBars extends Component {
+  static contextTypes = {
+    store:PropTypes.object
+  }
 
+  generate=()=>{
+      this.context.store.save();
+  }
     render(){
         return  (
-             <div>
+             <div style={{display:'flex',width:'100%'}}>
                 <div className={styles.left}>
                 </div>
                 <div className={styles.center}>
@@ -17,7 +23,7 @@ export default class ToolBars extends Component {
                     </a>
                     <a className={styles.aStyle}>
                       <MdUndo/>
-                      <span type="tip">撤销</span>
+                      <span type="tip" onClick={()=>{this.context.store.undo()}} >撤销</span>
                     </a>
                     <a className={styles.aStyle}>
                       <MdRedo/>
@@ -39,13 +45,13 @@ export default class ToolBars extends Component {
                       <MdFormatAlignRight/>
                       <span type="tip">右对齐</span>
                     </a>
-                    <a className={styles.aStyle}>
+                  
+                </div>
+                <div className={styles.right}>
+                <a className={styles.aStyle} onClick={this.generate}>
                       <MdDone/>
                       <span type="tip">执行</span>
                     </a>
-                </div>
-                <div className={styles.right}>
-              
                 </div>
             </div>
         )

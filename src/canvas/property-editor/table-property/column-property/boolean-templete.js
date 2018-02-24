@@ -22,7 +22,6 @@ export default class BooleanTemplete extends Component {
       }else{
           result =false
       }
-      console.log("change",result,typeof(result))
 
       this.updateStore(result);
   }
@@ -35,7 +34,6 @@ export default class BooleanTemplete extends Component {
     const currentElement = this.context.store.currentComponents;
     const props = currentElement.props;
     let value = props[this.props.propertyName];
-    console.log("value",value,typeof(value))
     value = value+"";
     return (
             <div className={styles.propertyGroup}>

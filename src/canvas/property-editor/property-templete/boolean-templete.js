@@ -22,7 +22,6 @@ export default class BooleanTemplete extends Component {
       }else{
           result =false
       }
-      console.log("change",result,typeof(result))
 
       this.updateStore(result);
   }

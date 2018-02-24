@@ -25,7 +25,6 @@ export default class ButtonElement extends Component {
 
   getSize = () => {
     const {width,height}=this.context.store.getDom(this.props.index).getBoundingClientRect();
-    console.log("text width height",width,height);
     return  {
     width,
     height,

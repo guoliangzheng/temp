@@ -6,8 +6,7 @@ import styles from "./index.css";
 import PropTypes, { element } from 'prop-types';
 import ElementList from '../element-list';
 import { ElementTypes, MODES } from "../constants";
-/* import Elements from "../elements";
- */
+
 import SnapLines from "./snap-lines";
 import * as constraints from "./constraints";
 import Slide from "./slide";
@@ -16,6 +15,7 @@ import { Button } from 'antd';
 import ComponentTree from './componentTree'
 import Tools from './tools'
 import HRuler from './hRuler';
+import VRuler from './vRuler'
 @observer
 class Canvas extends Component  {
      static contextTypes = {
@@ -90,7 +90,6 @@ class Canvas extends Component  {
       }
     
       handleDragStart = (e, type) => {
-        console.log("dragstart");
         this.context.store.setCurrentElement(null);
     
         const scale = this.context.store.scale;
@@ -187,14 +186,20 @@ class Canvas extends Component  {
                     backgroundColor: "#999"
                   }}
                 > 
-               {/*  <HRuler  maxValue={200}
-                    minValue={0}
-                    divide={10} precision={0.1} getCurrentValue={100}/>  */}
-                  <Slide
-                    ref={(slide) => { this.slideRef = slide; }}
-                    scale={scale}
-                  />
-                  <SnapLines lines={this.state.activeSnapLines} scale={scale} />
+                <div style={{display: 'flex',width:'100%',height:'16px'}}>
+                   <a style={{backgroundColor:' rgb(249, 250, 251)'}}  title=""></a>
+                  <HRuler/>
+                </div>
+                 <div style={{display: 'flex',width:'100%',height:'100%'}}>
+                    <VRuler/>
+                    <div style={{  float: 'right', width:'100%',height:'100%'}}>
+                      <Slide
+                        ref={(slide) => { this.slideRef = slide; }}
+                        scale={scale}
+                      />
+{/*                       <SnapLines lines={this.state.activeSnapLines} scale={scale} />
+ */}                    </div>
+                </div>
                 </div>
               </div>
               <aside className={styles.propertyEdior} style={{width:244}}>

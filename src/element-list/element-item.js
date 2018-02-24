@@ -14,7 +14,6 @@ const boxSource = {
 	endDrag(props, monitor) {
     const item = monitor.getItem()
     const dropResult = monitor.getDropResult()
-    console.log("dropResult",dropResult)
 		if (dropResult) {
       let {left,top}= props.getDropPosition(dropResult.id);
       props.onDrop(props.elementType,dropResult.id,{style:

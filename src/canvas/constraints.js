@@ -149,7 +149,10 @@ function getDifference(a, b) {
 export const getClosestSnapLines = (snaps, itemSnapLines) => {
   let closestHorizontal = null;
   let closestVertical = null;
-
+  return {
+    horizontal: closestHorizontal,
+    vertical: closestVertical
+  };
   for (let i = 0; i < snaps.length; i++) {
     const s1 = snaps[i];
     for (let x = 0; x < itemSnapLines.length; x++) {

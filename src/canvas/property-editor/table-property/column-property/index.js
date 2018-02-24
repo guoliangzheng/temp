@@ -47,7 +47,6 @@ export default class ColumnEditor extends Component {
     let count = 0;
     const children = [];
     columns.forEach((item) => {
-      console.log("item");
       children.push(<Tabs.Pane key={count}  label={item.label} name={count}><Editor index={count}/></Tabs.Pane>)
       count++;
    })

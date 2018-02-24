@@ -44,9 +44,9 @@ export default class TableProperty extends Component {
 
   renderProperty=()=>{
     
-    return <div>
-             <Left/>
-              <Top/>
+    return <div  style={{width:'100%', height:800,overflow:'auto'}}>
+               <Left/>
+               <Top/>
                <Width/>
                <Height/>
                <BooleanTemplete propertyName="stripe" propertyLabel="是否斑马纹"/>
@@ -84,7 +84,7 @@ export default class TableProperty extends Component {
     return (
       <div>
          <Tabs activeName="1" >
-          <Tabs.Pane label="属性管理" name="1">{this.renderProperty()}</Tabs.Pane>
+          <Tabs.Pane  label="属性管理" name="1">{this.renderProperty()}</Tabs.Pane>
           <Tabs.Pane label="事件管理" name="2">{this.renderEvent()}</Tabs.Pane>
           <Tabs.Pane label="数据集绑定" name="3">{this.renderBinding()}</Tabs.Pane>
           </Tabs>

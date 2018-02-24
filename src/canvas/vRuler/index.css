@@ -1,0 +1,13 @@
+  
+  .container{
+    top: 16px;
+    left: 0;
+    width: 16px;
+    height: calc(100% - 16px);
+    float: 'left';
+    border-right: 1px solid #dadadc;
+  }
+  
+  .rulerBox{
+    font-size: 12px;
+  }

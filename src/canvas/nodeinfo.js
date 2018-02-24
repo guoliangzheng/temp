@@ -10,7 +10,6 @@ import { DropTarget } from 'react-dnd'
 const TreeNode = Tree.TreeNode;
 const boxTarget = {
 	drop(props,monitor) {
-    console.log("monitor",monitor)
     return { id: props.index}
 	},
 }

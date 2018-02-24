@@ -22,7 +22,6 @@ export default class ComCobxData extends Component {
     }
   }
   updateStore(updatedValue) {
-        console.log("updatedValue",updatedValue);
         this.context.store.updateElementProps({ data: updatedValue });
   }
   render(){

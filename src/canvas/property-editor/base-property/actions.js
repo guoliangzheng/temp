@@ -29,7 +29,6 @@ class ActionFrom extends Component {
   renderAction = (element)=>{
       
     const {name} = element;
-    console.log("name",name);
 
     return (<div>{name}</div>)
   }

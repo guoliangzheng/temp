@@ -25,7 +25,7 @@ export default class TextProperty extends Component {
 
   renderProperty=()=>{
     
-    return <div>
+    return <div  style={{width:'100%', height:800,overflow:'auto'}}>
               <Left/>
               <Top/>
                <Width/>
