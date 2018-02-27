@@ -50,11 +50,17 @@ export default class Store{
       return this.slide;
     }
     constructor(slide) {
-      window.memroy = this;
       window.fetch = fetch;
       if(slide){
-        this.slide = slide;
+        //this.slide = slide;
       }else{
+        /**
+         构造初始化状态
+         1）初始化slide，同时绑定init事件，并设置rootID和初始化组件树components
+         2)初始化 actions，同时初始化init函数
+         3）舒适化数据集
+         
+        */
         let id = uuid();
         this.rootID = id;
         this.slide = new Slide({
@@ -113,6 +119,7 @@ export default class Store{
     })
     
   }
+  /*获取放置对象的落脚点*/
   getDropPosition(dropTagID){
     let e=window.event;
     const id = dropTagID || this.rootID;
@@ -347,13 +354,13 @@ export default class Store{
     })
     console.log('histroyt add',this.history.length);
   }
+  //object 转化为map对象
   _ObjectToMap(object){
     let map = new Map();
     for(let key in object){
       map.set(key,object[key]);
     }
     return map;
-
   }
   serialize(){
     this.xml = new Array();
@@ -457,6 +464,7 @@ export default class Store{
   }
   save(){
       let xml = this.serialize()
+      alert(xml);
       HttpService.save({
         url: 'http://127.0.0.1:8080/save',
         data: {
@@ -472,7 +480,7 @@ export default class Store{
     if(!obj) return ;
     const {id,children,type} = obj;
 
-    this.xml.push(obj.serializeStart(obj).join(""));
+    this.xml.push(obj.serializeStart(obj).join(""));1
     this.xml.push('<children>')
     if(children!=null){
       for(let i =0,length = children.length;i<length;i++){

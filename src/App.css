@@ -16,3 +16,7 @@
   background-color: #f8f8f9;
   z-index: var(--none);
 }
+.editor{
+
+  width: calc(100% - 200px);
+}

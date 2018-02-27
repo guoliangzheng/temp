@@ -19,7 +19,7 @@ export default class ToolBars extends Component {
                 <div className={styles.center}>
                     <a className={styles.aStyle}> 
                        <MdSave/>
-                      <span type="tip">保存</span>
+                      <span type="tip" onClick={()=>{this.context.store.undo()}}>保存</span>
                     </a>
                     <a className={styles.aStyle} onClick={()=>{this.context.store.undo()}} >
                       <MdUndo/>
