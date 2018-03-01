@@ -1,7 +1,6 @@
 import React, { Component} from "react";
 import { findDOMNode } from "react-dom";
 import { observer } from "mobx-react";
-
 import styles from "./index.css";
 import PropTypes, { element } from 'prop-types';
 import ElementList from '../element-list';

@@ -33,18 +33,15 @@ export default class Store{
     @observable currentElement = null;
     @observable mouseOverElement = null;
     @observable actions = null; //动作
-    @observable ininAction = null;//初始化话操作
     @observable rootID = null;  //组件树根节点ID
     @observable dataSet = null; //数据集
-    @observable side = false;
     @observable components = null;//组件树
     @observable poprtyeChange =0;
     @observable dropTagElementId = null;
-    @observable previeComponents = null;
     history = [];//所有操作产生的对象信息
 
     historyIndex = -1;
-    domRefs = new Map();
+    domRefs = new Map();//ID与虚拟DOM映射，可以根据组件ID找到DOM
 
     @computed get currentSlide() {
       return this.slide;
@@ -62,6 +59,7 @@ export default class Store{
          
         */
         let id = uuid();
+        //初始化一个根节点
         this.rootID = id;
         this.slide = new Slide({
           parent:null,
@@ -72,9 +70,10 @@ export default class Store{
           event:{
             init:'init'
           }
-         })
+         }) 
          this.components = new Map();
          this.actions = new Map();
+         //定义一个初始化方法，规定此方法为加载组件后调用的方法
          this.actions.set("init",{name:'init',body:'',paramters:'',action:function(){},describe:''});
          this.dataSet = new Map();
          this.components.set(id,this.slide);

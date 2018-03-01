@@ -20,9 +20,6 @@ elements[ElementTypes.SLIDE] = new Slide({
 });
 elements[ElementTypes.TEXT] =new Text( {
   type: ElementTypes.TEXT,
-  defaultWidth: 52,
-  defaultHeight: 36,
-  defaultText: ["hello is me"],
   props: {//属性定义
     style: {
       wordBreak: "break-word",
