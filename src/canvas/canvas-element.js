@@ -25,6 +25,7 @@ export const CanvasElementPropTypes = {
   children: PropTypes.node
 };
 
+//这个是用于组件在画布中拖拽和改变大小的
 @observer
 class CanvasElement extends Component {
   static propTypes = CanvasElementPropTypes

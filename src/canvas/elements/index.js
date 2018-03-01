@@ -8,7 +8,7 @@ import Image from './image'
 import Element  from './element'
 import From from './form'
 const elements = {};
-
+/*定义组件数据结构*/
 elements[ElementTypes.SLIDE] = new Slide({
   type: ElementTypes.SLIDE,
   id:'',
@@ -206,8 +206,6 @@ elements[ElementTypes.FORM] = new From({
   },
   children: []
 });
-
-
 elements[ElementTypes.FORMIITEM] =new Element( {
   type: ElementTypes.FORMIITEM,
   props: {
@@ -222,8 +220,7 @@ elements[ElementTypes.FORMIITEM] =new Element( {
 elements[ElementTypes.COXCOMB] =new Element( {
   type: ElementTypes.COXCOMB,
   props: {
-    
-    name:'访问来源',
+    name:'',
     type:'pie',
     radius:'55%',
     style: {

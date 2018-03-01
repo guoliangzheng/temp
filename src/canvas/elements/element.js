@@ -1,5 +1,5 @@
 import elementMap from "./index";
-
+/*扩展组件数据定义，用户数据序列化和反序列化，这个地方定义的不是很好，需要重构 */
 export default class Element extends Object{
      
       constructor(...items) {

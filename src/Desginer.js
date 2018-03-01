@@ -14,7 +14,7 @@ import 'element-theme-default';
 import PropTypes, { element } from 'prop-types';
 import { observer } from "mobx-react";
 require('codemirror/lib/codemirror.css');
-
+//设计器入口
 @observer
 class Desginer extends Component {
 
@@ -23,10 +23,13 @@ class Desginer extends Component {
   }; 
   render() {
     const selectResouce = this.context.resouceStore.selectResouce;
+    //初始化状态数据
     let store = new Store(selectResouce);
     return ( 
       <div selectID ={selectResouce} style={{width:'100%',height:'100%'}}>
-         <DragDropContextProvider backend={HTML5Backend}>
+         {/*用于构造拖拽的上下文*/}
+         <DragDropContextProvider backend={HTML5Backend}> 
+          {/*用于构造数据状态的上下文*/}
           <Provider store={store}>
             <Canvas></Canvas>
           </Provider>

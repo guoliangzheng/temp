@@ -1,3 +1,4 @@
+/**组件ID生成器 */
 function uuid() {
     var s = [];
     var hexDigits = "0123456789abcdef";

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+//用于处理组件异常的
 export default class PotentialError extends React.Component {   
     constructor(props) {     
       super(props);     

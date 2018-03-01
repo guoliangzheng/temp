@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+/*这个东西是用于计算拖拽和定位的，很复杂，我看不懂的说 --by 郑国梁*/
 import { MODES, SNAP_DISTANCE } from "../constants";
 
 const isVerticalResize = (mode) => (

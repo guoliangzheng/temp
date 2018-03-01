@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import styles from "./index.css";
 import {MdSave,MdUndo,MdRedo,MdDelete,MdFormatAlignCenter,MdFormatAlignJustify,MdFormatAlignLeft,MdFormatAlignRight,MdDone} from 'react-icons/lib/md'
-
+/**工具类 */
 export default class ToolBars extends Component {
   static contextTypes = {
     store:PropTypes.object

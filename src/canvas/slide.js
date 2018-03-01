@@ -174,7 +174,7 @@ class Slide extends Component {
       this.handleDragStop(MODES.MOVE);
     }
   }
- 
+  /**绘制高亮线**/
   handleKeyDown = (e) => {
     if (e.target !== document.body) return;
 
@@ -211,7 +211,7 @@ class Slide extends Component {
   }
 
 
-
+  /*递归组件树，用于组件树的渲染 */
   renderChild = (id) => {
 /*     const id = child.id;
  */ const store = this.context.store;
@@ -225,6 +225,7 @@ class Slide extends Component {
     });
 
     const intermediarySize = isSelected ? this.state.intermediarySize : null;
+    //取组件的数据机构对应的渲染结构
     const Element = elementFromType.get(childObj.type);
     let top = intermediarySize ? intermediarySize.top : childObj.props.style.top;
     let left= intermediarySize ? intermediarySize.left : childObj.props.style.left
@@ -232,29 +233,28 @@ class Slide extends Component {
     let height = childObj.props.style.height;
     return (
         <Element
-          key = {childObj.id}
-          index={childObj.id}
-          classes={classes}
-          mouseDownAction={this.handleMouseDown.bind(null, childObj.id)}
-          dragOverAction={this.handleMouseDown.bind(null, childObj.id)}
-          postions={{top:top,left:left}}
-
-          component={childObj}
-          ref={(el) => { this.context.store.setDomRef(childObj.id,el); }}
-          scale={this.props.scale}
-          rect={intermediarySize}
-          onResize={this.handleResize}
-          onResizeStart={this.handleResizeStart}
-          onResizeStop={this.handleResizeStop}
-          onDrag={this.handleDrag}
-          onDragStart={this.handleDragStart}
+          key = {childObj.id} //对动态组件渲染必要的属性，必须保证唯一
+          index={childObj.id} //组件ID
+          classes={classes}  //组件选择时的样式
+          mouseDownAction={this.handleMouseDown.bind(null, childObj.id)} //鼠标选中时执行的操作
+          dragOverAction={this.handleMouseDown.bind(null, childObj.id)}  //鼠标拖拽时执行的操作
+          postions={{top:top,left:left}} //组件相对于上级组件的位置
+          component={childObj}  //组件的数据结构
+          ref={(el) => { this.context.store.setDomRef(childObj.id,el); }} //包装组件实例，用于或者组件真实的高宽等
+          scale={this.props.scale} //缩放设置，暂时木用
+          rect={intermediarySize}  //暂时没用用到，想用于无法确定大小的对象时使用
+          onResize={this.handleResize}  //改变大小时事件
+          onResizeStart={this.handleResizeStart} //改变大小开始时
+          onResizeStop={this.handleResizeStop}  //改变大小后
+          onDrag={this.handleDrag}  //拖拽执行的时间
+          onDragStart={this.handleDragStart} 
           onDragStop={this.handleDragStop}
-          isSelected={isSelected}
-          isResizing={isSelected && store.isResizing}
-          isDragging={isSelected && store.isDragging}
-          resizeHorizontal={isSelected && !store.isDragging}
-          resizeVertical={isSelected && !store.isDragging}
-          canArrange={isSelected && !store.isResizing && !store.isDragging}
+          isSelected={isSelected} //控制是否选中
+          isResizing={isSelected && store.isResizing}//控制是否可用改变大小
+          isDragging={isSelected && store.isDragging} //控制是否可用改变拖拽
+          resizeHorizontal={isSelected && !store.isDragging}//控制是否可以改变高度
+          resizeVertical={isSelected && !store.isDragging}//控制是否可以改变宽度
+          canArrange={isSelected && !store.isResizing && !store.isDragging}//控制四个角的拖拽的，暂时没用到
           draggable
         > 
         {childObj.children!=null && childObj.children.map(this.renderChild) }
@@ -263,15 +263,15 @@ class Slide extends Component {
   }
 
   render() {
-     const {store:{components,rootID}} = this.context;
+   const {store:{components,rootID}} = this.context;
     if (!components) return null;
     const classes = classNames({
       [styles.slide]: true,
       [styles.isDragging]: this.context.store.isDragging
     });
+    //取根节点数据进行画板的构造
     const currentSlide = components.get(rootID);
     const { canDrop, isOver, connectDropTarget } = this.props;
-
     return connectDropTarget(
       <div canDrop={canDrop} isOver={isOver}   onMouseDown={this.handleMouseDown.bind(null,rootID)}
       ref={(ref)=>{this.context.store.setDomRef(rootID,ref)}}  connectDropTarget={connectDropTarget} className={classes} style={{...currentSlide.props.style }} id={rootID}>

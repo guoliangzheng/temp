@@ -157,10 +157,12 @@ class Canvas extends Component  {
               pointerEvents: isDraggingSlide ? "none" : "auto"
             }}
           >   
+        {/*工具类懒*/}
          <div className={styles.toolbar}>
             <Tools/>
          </div>        
          <div className={styles.mainContent}>     
+              {/*组件选择的列表*/}
               <aside  className={styles.elemenetlist}   style={{width:elemenetlistWidth}}>
                 <ElementList 
                   scale={scale}
@@ -170,16 +172,18 @@ class Canvas extends Component  {
                   spread = {this.spreadElementList}
                 />
               </aside>
+              {/*组件树结构展示*/}
               <div  className={styles.componentTree}   style={{width:200}}>
                  <ComponentTree />
               </div>
+            {/*画板部分*/}
             <div className={styles.canvas}  id="canvas" ref="container">
                 <div
                   style={{
                     transformOrigin: "top left",
                     width: '100%', 
                     height: '100%',
-                    transform: `scale(${scale})`,
+                    transform: `scale(${scale})`,//控制缩放的部分
                     top,
                     left,
                     backgroundColor: "#999"
@@ -187,10 +191,13 @@ class Canvas extends Component  {
                 > 
                 <div style={{display: 'flex',width:'100%',height:'16px'}}>
                    <a style={{backgroundColor:' rgb(249, 250, 251)'}}  title=""></a>
+                  {/*上边标尺*/}
                   <HRuler/>
                 </div>
                  <div style={{display: 'flex',width:'100%',height:'100%'}}>
+                  {/*左标尺*/}
                     <VRuler/>
+                    {/*-从这个地方开始真正的绘制图像-*/}
                     <div style={{  float: 'right', width:'100%',height:'100%'}}>
                       <Slide
                         ref={(slide) => { this.slideRef = slide; }}
