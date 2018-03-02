@@ -87,7 +87,7 @@ class Canvas extends Component  {
           scale: this.scale
         });
       }
-    
+      //设置开始拖动的位置
       handleDragStart = (e, type) => {
         this.context.store.setCurrentElement(null);
     
@@ -111,7 +111,7 @@ class Canvas extends Component  {
           activeSnapLines: []
         }); 
       }
-    
+      //控制拖拽
       handleDrag = (e) => {
         const size = { ...this.state.startRect };
         size.left += (e.clientX - this.state.startMousePosition.x) / this.context.store.scale;
@@ -123,6 +123,7 @@ class Canvas extends Component  {
         }); 
       }
     
+      //拖拽打断时，恢复默认
       handleDragStop = () => {
          this.setState({
           startMousePosition: null,
@@ -133,6 +134,7 @@ class Canvas extends Component  {
         }); 
       }
     
+      //设置放置元件
       handleDrop = (type,dropTagID, extraProps) => {
       //   const rect = this.state.elementRect || this.getDefaultPosition(type);
         this.context.store.dropElement(type,dropTagID,extraProps);  
