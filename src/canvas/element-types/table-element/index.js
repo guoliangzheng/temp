@@ -43,8 +43,6 @@ export default class TableElement extends Component {
     }
     const {summaryMethod} = componentProps;
     functionObject['summaryMethod']=actions.has(summaryMethod)?actions.get(summaryMethod).action:null;
-
-
     const columns= componentProps.columns;
     return (
       <div 

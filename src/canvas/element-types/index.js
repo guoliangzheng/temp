@@ -9,6 +9,7 @@ import FormItem from './fromItem-element'
 import Form from './form-element'
 import CoxComb  from './coxcomb-element'
 import Button from './button-element'
+/*定义组件选择*/
 const elementFromType = new Map();
 elementFromType.set(ElementTypes.BUTTON,Button);
 elementFromType.set(ElementTypes.TEXT,TextElement);

@@ -47,6 +47,7 @@ export default class Store{
       return this.slide;
     }
     constructor(slide) {
+      window.memroy = this;
       window.fetch = fetch;
       if(slide){
         //this.slide = slide;
@@ -291,8 +292,9 @@ export default class Store{
     })
   }
   addDataSet(dataSet){
+    debugger;
     transaction(()=>{
-      this.addhistroy();
+     // this.addhistroy();
       const {name} = dataSet;
       this.dataSet.set(name,dataSet);
     })
@@ -338,7 +340,7 @@ export default class Store{
 
   //所有变化添加到历史记录中
   addhistroy (){
-    transaction(() => {
+   /*  transaction(() => {
       const me = this;
        const snapshot={
          components:this._ObjectToMap(toJS(me.components)),
@@ -351,7 +353,7 @@ export default class Store{
        this.history[length] = snapshot; 
        this.historyIndex = length;
     })
-    console.log('histroyt add',this.history.length);
+    console.log('histroyt add',this.history.length); */
   }
   //object 转化为map对象
   _ObjectToMap(object){
