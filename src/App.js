@@ -13,9 +13,8 @@ import ResoucreStore from './resource/resouceStore'
 import 'element-theme-default';
 import Desginer from './Desginer';
 import Resoucre from './resource'
-
 import ResourceProvider from './ResourceProvider';
-
+//代码编辑器样式
 require('codemirror/lib/codemirror.css');
 class App extends Component {
   render() {
