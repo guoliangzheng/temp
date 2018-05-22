@@ -4,7 +4,7 @@ import classNames from "classnames";
 import PropTypes from 'prop-types';
 import { findDOMNode } from "react-dom";
 
-import { BLACKLIST_CURRENT_ELEMENT_DESELECT, ElementTypes, MODES } from "../constants";
+import { BLACKLIST_CURRENT_ELEMENT_DESELECT, ElementTypes, MODES } from "../../constants";
 import { Tree } from 'antd';
 import NodeInfo from './nodeinfo'
 

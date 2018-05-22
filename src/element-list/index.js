@@ -36,6 +36,7 @@ class ElementList extends Component {
   OnFold =()=>{
     const {fold} = this.props;
     this.setState({isfold:true})
+    debugger;
     fold();
   }
   onSpread=()=>{

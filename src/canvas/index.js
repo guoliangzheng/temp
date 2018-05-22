@@ -23,7 +23,10 @@ class Canvas extends Component  {
     
       constructor(props) {
         super(props);
-        this.state = {elemenetlistWidth:244 };
+        this.state = {
+                      elemenetlistWidth:244, 
+                      isfold: false  
+                     };
       }
      componentDidMount() {
         this.resize();
@@ -36,6 +39,17 @@ class Canvas extends Component  {
         window.removeEventListener("resize", this.resize);
       }
      
+      OnFold =()=>{
+        const {fold} = this.props;
+        this.setState({isfold:true})
+        fold();
+      }
+      onSpread=()=>{
+        const {spread} = this.props;
+        this.setState({isfold:false});
+        spread();
+      }
+    
       getDropPosition=(dropTagId)=>{
 
          return   this.context.store.getDropPosition(dropTagId);

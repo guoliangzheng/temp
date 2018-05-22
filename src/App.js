@@ -22,8 +22,7 @@ class App extends Component {
     return (
       <ResourceProvider store={store}>
           <div style={{display:'flex',width:'100%',height:'100%'}}>
-              <div style={{height:'100%',width:200}}><Resoucre/></div>
-              <div className={styles.editor} style={{height:'100%',width:'calc(100%-200px)'}}><Desginer/></div>
+              <div className={styles.editor} style={{height:'100%',width:'calc(100%)'}}><Desginer/></div>
           </div>
       </ResourceProvider>
     );
